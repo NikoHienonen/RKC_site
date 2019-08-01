@@ -3,22 +3,39 @@ import React, { Component } from 'react';
 import Tournament from './Tournament';
 
 class Tournaments extends Component {
-  state = {tournaments: []}
+  state = {fetchSuccess: false, tournaments: []}
   componentDidMount(){
-    this.setState({tournaments: this.props.tournaments})
+    this.getTournaments();
+  }
+  getTournaments = () => {
+    this.props.getTournaments(tournaments => {
+      console.log(tournaments);
+      if(tournaments) {
+        this.setState({fetchSuccess: true});
+        this.createTournamentTable(tournaments);
+      }
+    })
+  }
+  createTournamentTable = (tournaments) => {
+    const tournamentTable = tournaments.map(tournament => 
+      <li><Tournament tournament={tournament}/></li>
+    )
+    this.setState({tournaments: tournamentTable});
   }
   renderTournaments = () => {
-    const tournaments = this.state.tournaments.map(tournament => 
-      <Tournament tournament={tournament}/>
-    )
-    return tournaments;
-  }
-  render() {
+    console.log(this.state.tournaments)
     return (
       <div className="tournaments">
-        {this.renderTournaments()}
+        <ul>
+          {this.state.tournaments}
+        </ul>
       </div>
     );
+  }
+  render() {
+    return this.state.fetchSuccess === true
+    ? this.renderTournaments()
+    : <p>No tournaments yet!</p>;
   }
 }
 

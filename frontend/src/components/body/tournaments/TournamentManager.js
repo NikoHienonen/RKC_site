@@ -8,7 +8,7 @@ const TournamentManager = () => {
     <Consumer>
       {value => {
         return (
-          <Tournaments value={value}/>
+          <Tournaments getTournaments={value.getTournaments}/>
         )
       }}
     </Consumer>

@@ -1,14 +1,11 @@
-import React, { Component } from 'react';
-import { Consumer } from '../../../context';
+import React from 'react';
 
-class Tournament extends Component {
-  render() {
-    return (
-      <div className="tournament">
-        {this.props.tournament.name}
-      </div>
-    );
-  }
-}
+const Tournament = (props) => {
+  return (
+    <div className="tournament">
+      {props.tournament.name}
+    </div>
+  );
+};
 
 export default Tournament;
