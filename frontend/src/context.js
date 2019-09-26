@@ -11,6 +11,13 @@ export class Provider extends Component {
     })
     .catch(err => console.log(err));
   }
+  getLogin = (callback) => {
+    axios.get('users/login')
+    .then(response => {
+      callback(response.data);
+    })
+    .catch(err => console.log(err));
+  }
   render() {
     return(
       <Context.Provider value={{getTournaments: this.getTournaments}}>

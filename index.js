@@ -4,7 +4,9 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
+//Load routes
 const tournaments = require('./routes/api/Tournaments');
+const users = require('./routes/users');
 
 //Bodyparser middleware
 app.use(bodyParser.json());
@@ -19,6 +21,7 @@ mongoose.connect(db)
 
 //Use routes
 app.use('/api/tournaments', tournaments);
+app.use('/users', users);
 
 const port = process.env.PORT || 5000;
 
