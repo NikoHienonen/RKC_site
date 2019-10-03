@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import Tournament from './Tournament';
 
@@ -18,7 +19,9 @@ class Tournaments extends Component {
   }
   createTournamentTable = (tournaments) => {
     const tournamentTable = tournaments.map(tournament => 
-      <li><Tournament tournament={tournament}/></li>
+      <Link to={"/tournaments/"+tournament._id}>
+        <li><Tournament tournament={tournament}/></li>
+      </Link>
     )
     this.setState({tournaments: tournamentTable});
   }
