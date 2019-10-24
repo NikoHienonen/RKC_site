@@ -15,6 +15,10 @@ var TournamentSchema = new Schema({
     type: Boolean
     , required: true
   }
+  , location : {
+    type: String
+    , required: true
+  }
   , teams: [{
     _id: {
     type: Schema.Types.ObjectId

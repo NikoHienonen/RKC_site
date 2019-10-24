@@ -7,6 +7,7 @@ import Header from './components/static/Header';
 import Footer from './components/static/Footer';
 import Landing from './components/body/Landing';
 import Tournaments from './components/body/tournaments/Tournaments';
+import Tournament from './components/body/tournaments/Tournament/Tournament';
 import Login from './components/body/users/Login';
 import Admin from './components/admin/Admin';
 import AddUser from './components/admin/AddUser';
@@ -23,14 +24,16 @@ function App() {
           <div className="body-container">
             <Consumer>
               {value => {
-                const { getTournaments } = value
+                const { getTournaments, getTournamentbyId } = value
                 return(
                   <Switch>
                     <Route exact path="/" component={Landing}/>
                     <Route exact path="/tournaments" render={(props) => 
                       <Tournaments {...props} getTournaments={getTournaments}/>
                     }/>
-                    <Route exact path="/tournaments/:id" render
+                    <Route exact path="/tournaments/:name" render={(props) => 
+                      <Tournament {...props} getTournamentbyId={getTournamentbyId}/>
+                    }/>
                     <Route exact path="/login" component={Login}/>
                     <Route exact path="/admin" component={Admin}/>
                     <Route exact path="/admin/adduser" component={AddUser}/>

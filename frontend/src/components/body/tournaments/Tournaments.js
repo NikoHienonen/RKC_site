@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import Tournament from './Tournament';
-
 class Tournaments extends Component {
   state = {fetchSuccess: false, tournaments: []}
   componentDidMount(){
@@ -10,7 +8,6 @@ class Tournaments extends Component {
   }
   getTournaments = () => {
     this.props.getTournaments(tournaments => {
-      console.log(tournaments);
       if(tournaments) {
         this.setState({fetchSuccess: true});
         this.createTournamentTable(tournaments);
@@ -19,14 +16,18 @@ class Tournaments extends Component {
   }
   createTournamentTable = (tournaments) => {
     const tournamentTable = tournaments.map(tournament => 
-      <Link to={"/tournaments/"+tournament._id}>
-        <li><Tournament tournament={tournament}/></li>
-      </Link>
+      <li key={tournament._id}>
+        <Link to={{pathname: "/tournaments/"+tournament.name,
+          state: {
+            tournament: tournament
+          }}}>
+            {tournament.name}
+        </Link>
+      </li>
     )
     this.setState({tournaments: tournamentTable});
   }
   renderTournaments = () => {
-    console.log(this.state.tournaments)
     return (
       <div className="tournaments">
         <ul>
