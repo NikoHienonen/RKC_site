@@ -1,7 +1,12 @@
 :root {
-  --black: #FFF;
+  --orange: #FF9300;
+  --light-orange: rgb(255, 179, 30);
+  --overlay: rgba(78, 0, 142, 0.85);
+  --menu-speed: 0.75s;
 }
 
+@import url("media-queries.css");
+@import url("header.css");
 
 * {
   box-sizing: border-box;
@@ -11,4 +16,19 @@
 body, html {
   margin: 0;
   padding: 0;
+}
+
+.App{
+  margin: auto;
+  background-color: var(--orange);
+  height: 100vh;
+  width: 100vw;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: Teko, 'Times New Roman', Times, serif;
+  font-weight: 700;
+}
+
+div.body-container{
+  vertical-align: middle;
 }
