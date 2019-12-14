@@ -13,54 +13,16 @@ var TournamentSchema = new Schema({
   }
   , active:  {
     type: Boolean
-    , required: true
+    , default: false
   }
   , teams: [{
-    _id: {
-    type: Schema.Types.ObjectId
-    , index: true
-    , required: true
-    , auto: true
-  }
-  , name: {
-    type: String
-    , required: true
-  }
-  , winner: {
-    type: Boolean
-    , default: false 
-  }
-  , roundsPlayed: {
-    type: Number
-    , default: 0 
-  }
-  , roundsWon: {
-    type: Number
-    , default: 0 
-  }
-  , roundsLost: {
-    type: Number
-    , default: 0 
-  }
+    type: Schema.Types.ObjectId,
+    ref: 'team'
   }]
   , matches: [{
-    _id: {
-      type: Schema.Types.ObjectId
-      , index: true
-      , required: true
-      , auto: true
-    }
-    , homeId: Number
-    , visitorId: Number
-    , homeRoundsWon: {
-      type: Number
-      , default: 0 
-    }
-    , visitorRoundsWon: {
-      type: Number
-      , default: 0 
-    }
+    type: Schema.Types.ObjectId,
+    ref: 'match'
   }]
 })
 
-module.exports = TournamentSchema = mongoose.model('tournament', TournamentSchema);
+mongoose.model('tournament', TournamentSchema);

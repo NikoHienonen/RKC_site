@@ -1,24 +1,44 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 const app = express();
 
+//load routes
 const tournaments = require('./routes/api/Tournaments');
+const teams = require('./routes/api/Teams');
 
-//Bodyparser middleware
+//Map golbal promidr - get rid off deprication warning
+mongoose.Promise = global.Promise;
+
+// static folder
+app.use(express.static(path.join(__dirname, 'public')));
+
+//body-parser middleware
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 //DB configuration
 const db = require('./conf/keys').mongoURI;
 
 //connect Mongo
-mongoose.connect(db)
+mongoose.connect(db, {
+  useNewUrlParser: true
+})
   .then(() => console.log('MongoDB connected.'))
+  .catch(err => console.log(err));
+
+  //connect mongoose
+mongoose.connect(db, {
+  useNewUrlParser: true
+})
+  .then(result => console.log('MongoDB connected'))
   .catch(err => console.log(err));
 
 //Use routes
 app.use('/api/tournaments', tournaments);
+app.use('/api/teams', teams);
 
 const port = process.env.PORT || 5000;
 

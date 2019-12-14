@@ -1,11 +1,16 @@
 const router = require('express').Router();
+const mongoose = require('mongoose');
 
 //Tournament Model
-const Tournament = require('../../models/Tournament');
+require('../../models/Tournament');
+const Tournament = mongoose.model('tournament');
+
+require('../../models/Team');
+const Team = mongoose.model('team');
 
 router.get('/', (req, res) => {
   Tournament.find()
-    .sort({ date: -1 })
+    .sort({ date: 'desc' })
     .then(tournaments => res.json(tournaments))
 });
 
@@ -18,9 +23,8 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
   const newTournament = new Tournament({
     name: req.body.name
-    , active: req.body.active
-    , teams: req.body.teams
-    , matches: req.body.matches
+    , date: req.body.date
+    , teams: new Team(req.body.teams)
   });
   newTournament.save().then(tournament => res.json(tournament))
 });

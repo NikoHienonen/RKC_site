@@ -12,10 +12,6 @@ var TeamSchema = new Schema({
     type: String
     , required: true
   }
-  , winner: {
-    type: Boolean
-    , default: false 
-  }
   , roundsPlayed: {
     type: Number
     , default: 0 
@@ -25,6 +21,14 @@ var TeamSchema = new Schema({
     , default: 0 
   }
   , roundsLost: {
+    type: Number
+    , default: 0 
+  }
+  , pointsWon: {
+    type: Number
+    , default: 0 
+  }
+  , pointsLost: {
     type: Number
     , default: 0 
   }

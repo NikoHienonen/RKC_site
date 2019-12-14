@@ -8,13 +8,21 @@ const MatchSchema = new Schema({
     , required: true
     , auto: true
   }
-  , homeId: Number
-  , visitorId: Number
+  , homeId: String
+  , visitorId: String
   , homeRoundsWon: {
     type: Number
     , default: 0 
   }
   , visitorRoundsWon: {
+    type: Number
+    , default: 0 
+  }
+  , homePointsWon: {
+    type: Number
+    , default: 0 
+  }
+  , visitorPointsWon: {
     type: Number
     , default: 0 
   }
