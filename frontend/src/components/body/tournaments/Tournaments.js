@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import {getTournaments} from '../../../FetchClient';
+import {getTournaments} from '../../../components/utilities/FetchClient';
 
 export default function Tournaments(props) {
   const [tournaments, setTournaments] = useState([]);

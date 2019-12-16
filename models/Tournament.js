@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+
+require('./Match');
+
 var TournamentSchema = new Schema({
   name : {
     type: String
@@ -20,12 +23,34 @@ var TournamentSchema = new Schema({
     , required: true
   }
   , teams: [{
-    type: Schema.Types.ObjectId,
-    ref: 'team'
+    name: {
+      type: String
+      , required: true
+    }
+    , roundsPlayed: {
+      type: Number
+      , default: 0 
+    }
+    , roundsWon: {
+      type: Number
+      , default: 0 
+    }
+    , roundsLost: {
+      type: Number
+      , default: 0 
+    }
+    , pointsWon: {
+      type: Number
+      , default: 0 
+    }
+    , pointsLost: {
+      type: Number
+      , default: 0 
+    }
   }]
   , matches: [{
     type: Schema.Types.ObjectId,
-    ref: 'match'
+    ref: 'Match'
   }]
 })
 

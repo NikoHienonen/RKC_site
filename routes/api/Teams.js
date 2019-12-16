@@ -15,11 +15,22 @@ teams.get('/:id', (req, res) => {
     .catch(err => res.status(404).json({success: false}));
 });
 
-teams.post('/', (req, res) => {
-  const newTeam = new Team({
-    name: req.body.name
-  });
-  newTeam.save().then(team => res.json(team))
+teams.post('/:id', (req, res) => {
+  Tournament.findOne({
+    _id: req.params.id
+  })
+    .then(tournament => {
+      const newTeam = new Team({
+        name: req.body.name
+      });
+      tournament.teams.unshift(newTeam);
+      tournament.save()
+        .then(result => res.json(result))
+        .catch(error => {
+          console.log(error);
+          res.send(error);
+        })
+    });
 });
 
 teams.delete('/:id', (req, res) => {

@@ -21,7 +21,8 @@ export default class Tournament extends Component {
   }
   render() {
     if(this.state.tournament){
-      const { name, date, location} = this.state.tournament;
+      console.log('teams: '+tournament.teams)
+      const { name, date, location, teams} = this.state.tournament;
       let newDate = new Date(date);
       const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
       return (
@@ -31,6 +32,7 @@ export default class Tournament extends Component {
           <h2>{name}</h2>
           <p>{newDate.toLocaleDateString('fi-US', options)}</p>
           <p>{location}</p>
+          <p>{teams[0]}</p>
           <Route to="/matches">Matches</Route>
         </div>
       )

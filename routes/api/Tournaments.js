@@ -4,10 +4,10 @@ const mongoose = require('mongoose');
 //Tournament Model
 require('../../models/Tournament');
 const Tournament = mongoose.model('tournament');
-
+/*
 require('../../models/Team');
 const Team = mongoose.model('team');
-
+*/
 router.get('/', (req, res) => {
   Tournament.find()
     .sort({ date: 'desc' })
@@ -16,17 +16,36 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
   Tournament.findById(req.params.id)
-    .then(tournament => res.json(tournament))
+    .then(tournament => {
+      console.log(tournament)
+      res.json(tournament)
+    })
     .catch(err => res.status(404).json({success: false}));
 });
 
 router.post('/', (req, res) => {
-  const newTournament = new Tournament({
+  let teamArray;
+  /*if(req.body.teams){
+    teamArray = req.body.teams.map(team => {
+      let newTeam = new Team(team)
+      console.log(newTeam)
+      return newTeam
+    });
+  }*/
+  console.log(teamArray)
+  const newTournament = {
     name: req.body.name
     , date: req.body.date
-    , teams: new Team(req.body.teams)
-  });
-  newTournament.save().then(tournament => res.json(tournament))
+    , teams: req.body.teams
+    , location: req.body.location
+  }
+  new Tournament(newTournament)
+    .save()
+      .then(tournament => res.send(tournament))
+      .catch(err => {
+        console.log(err)
+        res.status(400).send(err)
+      });
 });
 
 router.delete('/:id', (req, res) => {

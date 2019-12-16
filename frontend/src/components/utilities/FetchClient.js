@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-
 export function getTournaments (callback) {
   axios.get('/api/tournaments')
   .then(response => {
@@ -18,6 +17,7 @@ export function getTournamentById  (id, callback) {
 }
 
 export function postNewTournament  (data, callback) {
+  console.log(data)
   axios.post(`/api/tournaments/`, data)
   .then(response => {
     callback(response.data);

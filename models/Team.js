@@ -1,14 +1,21 @@
+/*
+export default class Team {
+  constructor(name){
+    this.name = name;
+    this.roundsPlayed = 0;
+    this.roundsWon = 0;
+    this.roundsLost = 0;
+    this.pointsWon = 0;
+    this.points = 0;
+  }
+}
+
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-var TeamSchema = new Schema({
-  _id: {
-    type: Schema.Types.ObjectId
-    , index: true
-    , required: true
-    , auto: true
-  }
-  , name: {
+const TeamSchema = new Schema({
+  name: {
     type: String
     , required: true
   }
@@ -34,4 +41,5 @@ var TeamSchema = new Schema({
   }
 })
 
-module.exports = TeamSchema = mongoose.model('team', TeamSchema);
+mongoose.model('team', TeamSchema);
+*/

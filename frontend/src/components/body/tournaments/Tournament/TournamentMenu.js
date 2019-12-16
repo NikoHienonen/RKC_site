@@ -6,7 +6,6 @@ import Teams from './Teams';
 
 const TournamentMenu = (tournament1)=> {
     const {tournament} = tournament1; 
-    console.log(tournament);
     return (
         <div>
             <Link to={"/tournaments/"+tournament.name}>{tournament.name}</Link>
