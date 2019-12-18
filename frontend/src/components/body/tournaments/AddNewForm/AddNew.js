@@ -3,7 +3,7 @@ import React from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import FormValidator from '../../../utilities/FormHandler';
+import FormHandler from '../../../utilities/FormHandler';
 import ValidateValues from '../../../utilities/ValidateValues';
 
 const INITIAL_STATE = {
@@ -38,7 +38,7 @@ export default function AddNew() {
     values, 
     isSubmitting, 
     dbError
-  } = FormValidator(INITIAL_STATE, ValidateValues);
+  } = FormHandler(INITIAL_STATE, ValidateValues);
 
   function handleSelect(date) {
     handleDateChange(date);

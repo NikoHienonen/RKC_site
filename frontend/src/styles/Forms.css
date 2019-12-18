@@ -1,0 +1,22 @@
+form .admin-login {
+  padding: 20;
+}
+input {
+  height: 2rem;
+  background-color: 'rgba(255,255,255,0.2)';
+  padding: 0 1rem;
+  color: 'white';
+  font-size: 1.2rem;
+}
+button.submit {
+  background-color: var(--orange);
+  padding: 0 1rem;
+  text-align: 'center';
+  color: 'white';
+  font-size: 1.2rem;
+}
+p.errormsg {
+  color: 'red';
+  font-size: 1.2rem;
+  padding-bottom: 1rem;
+}

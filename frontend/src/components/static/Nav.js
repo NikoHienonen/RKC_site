@@ -6,6 +6,7 @@ export default function Nav(){
     <nav>
       <NavLink to="/" activeClassName='active'>Etusivu</NavLink>
       <NavLink to="/turnaukset" activeClassName='active'>Turnaukset</NavLink>
+      <NavLink to="/admin/login" activeClassName='active'>Admin</NavLink>
     </nav>
   );
 }

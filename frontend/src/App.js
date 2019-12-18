@@ -11,6 +11,8 @@ import Tournaments from './components/body/tournaments/Tournaments';
 import Tournament from './components/body/tournaments/Tournament';
 import AddNew from './components/body/tournaments/AddNewForm/AddNew';
 
+import Login from './components/admin/Login/LoginForm';
+
 function App() {
   return (
     <Router>
@@ -22,6 +24,7 @@ function App() {
             <Route exact path="/turnaukset" component={Tournaments}/>
             <Route exact path="/turnaukset/uusi" component={AddNew}/>
             <Route exact path="/turnaukset/:name" component={Tournament}/>
+            <Route exact path="/admin/login" component={Login}/>
           </Switch>
         </div>
         <Footer/>
