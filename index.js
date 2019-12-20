@@ -7,8 +7,7 @@ const app = express();
 
 //load routes
 const tournaments = require('./routes/api/Tournaments');
-const teams = require('./routes/api/Teams');
-const admin = require('./routes/api/Admin');
+//const admin = require('./routes/api/Admin');
 
 //Map golbal promidr - get rid off deprication warning
 mongoose.Promise = global.Promise;
@@ -38,9 +37,9 @@ mongoose.connect(db, {
   .catch(err => console.log(err));
 
 //Use routes
+
 app.use('/api/tournaments', tournaments);
-app.use('/api/teams', teams);
-app.use('/api/admin', admin);
+//app.use('/api/admin', admin);
 
 const port = process.env.PORT || 5000;
 

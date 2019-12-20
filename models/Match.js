@@ -2,8 +2,14 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const MatchSchema = new Schema({
-  homeId: String
-  , visitorId: String
+  homeId: {
+    type: String,
+    required: true
+  }
+  , visitorId: {
+    type: String,
+    required: true
+  }
   , homeRoundsWon: {
     type: Number
     , default: 0 

@@ -1,42 +1,75 @@
-const teams = require('express').Router();
+const router = require('express').Router({mergeParams: true});
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
-//Team Model
+// Use body-parser
+router.use(bodyParser.urlencoded({extended: false}));
+router.use(bodyParser.json());
+
+//Tournament Model
 const Tournament = require('../../models/Tournament');
+const Team = require('../../models/Team');
 
-teams.get('/', (req, res) => {
-  Tournament.find({ teams: { $elemMatch: { name: "RKC" } } })
-    .sort({ roundsWon: -1 })
-    .then(teams => res.json(teams))
-});
-
-teams.get('/:id', (req, res) => {
-  Team.findById(req.params.id)
-    .then(team => res.json(team))
-    .catch(err => res.status(404).json({success: false}));
-});
-
-teams.post('/:id', (req, res) => {
-  Tournament.findOne({
-    _id: req.params.id
-  })
+// Get teams by a tournament ID
+router.get('/', (req, res) => {
+  const { tournamentId } = req.params;
+  Tournament.findOne({_id: tournamentId})
     .then(tournament => {
-      const newTeam = new Team({
-        name: req.body.name
+      const { teams } = tournament;
+      res.status(200).json({
+        count: teams.length,
+        teams: teams
       });
-      tournament.teams.unshift(newTeam);
-      tournament.save()
-        .then(result => res.json(result))
-        .catch(error => {
-          console.log(error);
-          res.send(error);
-        })
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: "No tournament found"
+      });
     });
 });
 
-teams.delete('/:id', (req, res) => {
-  Team.findById(req.params.id)
-    .then(team => team.remove().then(() => res.json({success: true})))
-    .catch(err => res.status(404).json({success: false}));
+//Get one team from a tournament by tournament and team IDs
+router.get('/:teamId', (req, res) => {
+  const { tournamentId, teamId } = req.params;
+  Tournament.findOne({_id: tournamentId})
+    .then(tournament => {
+      const team = tournament.teams.id(teamId);
+      if(team) {
+        res.status(200).json({
+          team: team
+        });
+      } else {
+        res.status(500).json({
+          error: "No team found"
+        })
+      }
+    })
+    .catch(err => {
+      res.status(500).json({
+        error: err
+      });
+    });
 });
 
-module.exports = teams;
+// Add teams to a tournament by a tournament ID
+router.post('/', (req, res) => {
+  const { tournamentId } = req.params;
+  const { teams } = req.body;
+  console.log(teams);
+  Tournament.findByIdAndUpdate(tournamentId,
+    {$set: {"teams": teams}},
+    (err, result) => {
+      if(err) {
+        res.status(500).json({
+          error: err
+        });
+      } else {
+        res.status(201).send({
+          count: result
+        });
+      }
+    }
+  );
+});
+
+module.exports = router;

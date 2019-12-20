@@ -1,93 +1,136 @@
 const router = require('express').Router();
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+
+// Use body-parser
+router.use(bodyParser.urlencoded({extended: false}));
+router.use(bodyParser.json());
 
 //Tournament Model
-require('../../models/Tournament');
-const Tournament = mongoose.model('tournament');
-/*
-require('../../models/Team');
-const Team = mongoose.model('team');
-*/
+const Tournament = require('../../models/Tournament');
+
+// load auxiliary routes
+const teams = require('./teams');
+
+router.use('/:tournamentId/teams', teams);
+
+// Get all tournaments
 router.get('/', (req, res) => {
   Tournament.find()
-    .sort({ date: 'desc' })
-    .then(tournaments => res.json(tournaments))
-});
-
-router.get('/:id', (req, res) => {
-  Tournament.findById(req.params.id)
-    .then(tournament => {
-      console.log(tournament)
-      res.json(tournament)
-    })
-    .catch(err => res.status(404).json({success: false}));
-});
-
-router.post('/', (req, res) => {
-  let teamArray;
-  /*if(req.body.teams){
-    teamArray = req.body.teams.map(team => {
-      let newTeam = new Team(team)
-      console.log(newTeam)
-      return newTeam
-    });
-  }*/
-  console.log(teamArray)
-  const newTournament = {
-    name: req.body.name
-    , date: req.body.date
-    , teams: req.body.teams
-    , location: req.body.location
-  }
-  new Tournament(newTournament)
-    .save()
-      .then(tournament => res.send(tournament))
-      .catch(err => {
-        console.log(err)
-        res.status(400).send(err)
-      });
-});
-
-router.delete('/:id', (req, res) => {
-  Tournament.findById(req.params.id)
-    .then(tournament => tournament.remove().then(() => res.json({success: true})))
-    .catch(err => res.status(404).json({success: false}));
-});
-
-router.put('/update/:id', (req, res) => {
-  Tournament.findOne({_id: req.params.id }, (err, found) => {
-    if(err) {
-      res.status(500).send();
-    } else {
-      if(!found) {
-        res.status(404).send();
-      } else {
-        if(req.body.name) {
-          found.name = req.body.name;
-        }
-        if(req.body.active) {
-          found.active = req.body.active;
-        }
-        if(req.body.date) {
-          found.date = req.body.date;
-        }
-        if(req.body.teams) {
-          found.teams = req.body.teams;
-        }
-        if(req.body.matches) {
-          found.matches = req.body.matches;
-        }
-        found.save((err, updatedObj) => {
-          if(err) {
-            res.status(500).send();
-          } else {
-            res.send(updatedObj);
+    .exec()
+    .then(documents => {
+      res.status(200).json({
+        count: documents.length,
+        tournaments: documents.map(doc => {
+          return {
+            _id: doc._id,
+            name: doc.name,
+            location: doc.location,
+            date: doc.date,
+            teams: doc.teams,
+            referees: doc.referees.map(referee => {
+              // Don't send the encrypted referee passwords
+              return {name: referee.name, matches: referee.matches}
+            }),
+            matches: doc.matches,
+            request: {
+              type: 'GET',
+              url: 'http://localhost:5000/api/tournaments/'+doc._id
+            }
           }
         })
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        error: err
+      });
+    })
+});
+
+// Get tournament by id
+router.get('/:tournamentId', (req, res) => {
+  const { tournamentId } = req.params;
+  Tournament.findById(tournamentId)
+    .exec()
+    .then(tournament => {
+      if (!tournament) {
+        return res.status(404).json({
+          message: "Tournament not found"
+        });
       }
-    }
+      res.status(200).json({
+        tournament: tournament
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        error: err
+      })
+    });
+});
+
+//Create new tournament
+router.post('/', (req, res) => {
+  const { name, location, date } = req.body;
+  Tournament.create({
+    name: name,
+    location: location,
+    date: date,
   })
+    .then(tournament => {
+      res.status(201).json({
+        message: "Tournament created",
+        tournament: tournament
+      })
+    })
+    .catch(err => {
+      res.status(500).json({
+        error: err
+      });
+    });
 })
 
+// Update a tournament by ID
+router.patch('/:tournamentId', (req ,res) => {
+  const { tournamentId } = req.params;
+  const updateFields = {};
+  for (const [key, value] of Object.entries(req.body)) {
+    console.log(key, value)
+    updateFields[key] = value;
+  }
+  Tournament.update({_id: tournamentId}, {
+    $set: updateFields
+  }
+  )
+  .exec()
+  .then(result => {
+    res.status(200).json({
+      message: "Successfully updated"
+    });
+  })
+  .catch(err => {
+    res.status(500).json({
+      error: err
+    });
+  });
+})
+
+// Delete a tournament by ID
+router.delete('/tournamentId', (req, res) => {
+  const { tournamentId } = req.params;
+  Tournament.remove({_id: tournamentId})
+    .exec()
+    .then(result => {
+      res.status(200).json({
+        message: "Tournament deleted"
+      })
+    })
+    .catch(err => {
+      res.status(500).json({
+        error: err
+      });
+    });
+});
 
 module.exports = router;
