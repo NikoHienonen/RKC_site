@@ -1,12 +1,21 @@
 :root {
-  --orange: #FF9300;
-  --light-orange: rgb(255, 179, 30);
-  --overlay: rgba(78, 0, 142, 0.85);
+  --orange: #F7882F;
+  --light-orange: #E6C043;
+  --blue: #76BED0;
+  --overlay: rgba(25, 25, 35, 0.8);
+  --black: #000000;
+  --shallow-background: rgba(0,0,0, 0.85);
+  --red: #F6511D;
   --menu-speed: 0.75s;
 }
 
 @import url("media-queries.css");
+@import url("forms.css");
+@import url("tables.css");
 @import url("header.css");
+@import url("menu.css");
+@import url("card.css");
+@import url("buttons.css");
 
 * {
   box-sizing: border-box;
@@ -16,12 +25,17 @@
 body, html {
   margin: 0;
   padding: 0;
+  font-family: Verdana, Helvetica, sans-serif;
+}
+
+ul {
+  list-style: none;
 }
 
 .App{
   margin: auto;
   background-color: var(--orange);
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
 }
 h1, h2, h3, h4, h5, h6 {
@@ -29,12 +43,72 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
 }
 
+div.m3-container {
+  margin: 3rem 0;
+}
+
 div.body-container{
-  vertical-align: middle;
+  padding: 1rem;
 }
 .error-input {
-  border: 1px solid red;
+  border: 1px solid var(--red);
 }
 .error-text {
-  color: red;
+  color: black;
+}
+
+div.tournaments ul li button{
+  background-color: var(--orange);
+  color: black;
+  font-size: 1.2rem;
+  border: none;
+  width: 100%;
+  text-align: start;
+  padding: 0.5rem 1.5rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid black;
+}
+
+div.tournaments ul li button:hover {
+  cursor: pointer;
+}
+
+div.landing {
+  height: 70vh;
+  margin: auto 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+div.landing img {
+  width: 70vw;
+  display: inline-block;
+}
+
+div.landing h1 {
+  display: inline-block;
+  margin: 0 auto;
+  color: black;
+  text-shadow: none;
+  width: 100%;
+  text-align: center;
+  font-size: 1.8rem;
+}
+
+footer {
+  width: 100vw;
+  left: 0;
+  bottom: 0;
+  padding: 1rem;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+footer p{
+ font-size: 1rem;
+ font-weight: 600; 
 }

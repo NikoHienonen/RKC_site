@@ -29,13 +29,13 @@ const TeamSchema = new Schema({
 });
 
 const MatchSchema = new Schema({
-  homeId: {
-    type: String,
-    required: true
+  homeTeam: {
+    type: Schema.Types.ObjectId,
+    ref: 'Team'
   }
-  , visitorId: {
-    type: String,
-    required: true
+  , visitorTeam: {
+    type: Schema.Types.ObjectId,
+    ref: 'Team'
   }
   , homeRoundsWon: {
     type: Number
@@ -84,6 +84,12 @@ var TournamentSchema = new Schema({
   location : {
     type: String
     , required: true
+  },
+  defaultMatch: {
+    maxRounds: Number
+    , maxPoints: Number
+    , bestOfMaxRounds: Boolean
+    , winByTwo: Boolean
   },
   teams: [TeamSchema],
   referees: [RefereeSchema],

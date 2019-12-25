@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-import { postNewTournament } from './FetchClient';
+import { postNewTournament } from '../../../utilities/FetchClient';
 
 class Team {
   constructor(name){
@@ -12,7 +12,7 @@ export default function FormHandler(initialState, validate) {
   const [values, setValues] = useState(initialState);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setSubmitting] = useState(false);
-  const [dbError, setDBError] = useState(null);
+  const [dbResult, setDBResult] = useState(null);
 
   useEffect(() => {
     if(isSubmitting) {
@@ -32,15 +32,15 @@ export default function FormHandler(initialState, validate) {
         sendTournament(data);
         setSubmitting(false);
       } else {
-        console.log('error')
         setSubmitting(false);
       }
     }
   }, [errors]);
   
   function sendTournament(data) {
-    console.log(data)
-    postNewTournament(data, result => console.log(result));
+    postNewTournament(data, result => {
+      setDBResult(result.message)
+    });
   }
 
   function handleDateChange(date) {
@@ -65,7 +65,6 @@ export default function FormHandler(initialState, validate) {
   }
 
   function handleChange(e) {
-    console.log(values);
     const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
     setValues({
       ...values,

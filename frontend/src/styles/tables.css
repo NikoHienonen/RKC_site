@@ -1,0 +1,5 @@
+td, th {
+  text-align: center;
+  min-width: 2rem;
+  overflow: auto;
+}

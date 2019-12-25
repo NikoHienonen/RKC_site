@@ -1,29 +1,50 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
-import {getTournamentById} from '../../../components/utilities/FetchClient';
+import { TournamentContext } from '../../utilities/TournamentContext'; 
+import Back from '../../static/Back';
+import { deleteTournament } from '../../utilities/FetchClient';
+import NoTournamentFound from '../../static/NoTournament';
 
 export default function Tournament(props) {
-  const [tournament, setTournament] = useState(null);
-
-  useEffect(() => {
-    if(!tournament) {
-      const { id } = props.location.state;
-      console.log(id)
-      getTournamentById(id, tournament => {
-        if(tournament){
-          console.log(tournament)
-          setTournament(tournament);
-        }
-      })
-    }
-  });
-
   return (
-    !tournament
+    <TournamentContext.Consumer>
+      {context => {
+        const { tournament } = context;
+        return !tournament
+        ? <NoTournamentFound/>
+        : <div className="m3-container">
+            <h2>{tournament.name}</h2>
+            <p>{tournament.location}</p>
+            <p>{tournament.date}</p>
+            <div className="actions">
+              <Link to={`/turnaukset/${tournament.name}/sarjataulukko`}>Sarjataulukko</Link>
+              <Link to={`/turnaukset/${tournament.name}/otteluohjelma`}>Otteluohjelma</Link>
+              <Link to={`/turnaukset/${tournament.name}/muokkaa`}>Muokkaa</Link>
+              <button onClick={() => deleteTournament(tournament._id, result => {
+                console.log(result);
+                alert(result.message ? "Poisto epäonnistui" : "Poisto Onnistui");
+                props.history.push('/');
+                window.location.reload();
+              })}>
+                Poista
+              </button>
+            </div>
+            <Back link='/turnaukset'/>
+          </div>
+      }}
+    </TournamentContext.Consumer>
+  );
+}
+
+/*
+!tournament
     ? <p>No tournament found!</p>
     : 
     (
       <div className="tournament">
+        <Link to={{pathname: `/turnaukset/${tournament.name}/muokkaa`
+        , state: {id: tournament._id, name: tournament.name}}}>Muokkaa</Link>
         <h2>{tournament.name}</h2>
         <p>{tournament.location}</p>
         <p>{tournament.date}</p>
@@ -60,6 +81,4 @@ export default function Tournament(props) {
           )
         }
       </div>
-    )
-  );
-}
+    ) */

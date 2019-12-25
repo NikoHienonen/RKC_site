@@ -3,13 +3,17 @@ import React from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import FormHandler from '../../../utilities/FormHandler';
-import ValidateValues from '../../../utilities/ValidateValues';
+import { default as FormHandler } from './AddNewFormHandler';
+import { default as ValidateValues } from './AddNewValidateValues';
 
 const INITIAL_STATE = {
   name: 'KEINOSEN TURNAUS',
   location: 'Tieteenkatu 4',
   date: new Date(),
+  maxRounds: 0,
+  maxPoints: 0,
+  bestOfMaxRounds: false,
+  winByTwo: false,
   team: '',
   teams: [
     {
@@ -19,7 +23,7 @@ const INITIAL_STATE = {
       name: "Lempo"
     },
     {
-      name: "Aoba"
+      name: "Aoba Johsai"
     },
     {
       name: "Shiratorizawa"
@@ -37,7 +41,7 @@ export default function AddNew() {
     errors, 
     values, 
     isSubmitting, 
-    dbError
+    dbResult
   } = FormHandler(INITIAL_STATE, ValidateValues);
 
   function handleSelect(date) {
@@ -50,40 +54,59 @@ export default function AddNew() {
  
   return(
     <form onSubmit={submit}>
-      <label style={{display: 'block'}}>
-        Name:
+      <label>
+        Nimi
         <input value={values.name} onChange={handleChange} 
-        onBlur={handleBlur} className={errors.name && 'error-input'} type="text" name="name"/>
+        onBlur={handleBlur} className={errors.name && 'error-input'} type="text" 
+        name="name"/>
       </label>
       {errors.name && <p className="error-text">{errors.name}</p>}
-      <label style={{display: 'block'}}>
-        Location:
+      <label>
+        Sijainti
         <input value={values.location} onChange={handleChange} 
-        onBlur={handleBlur} className={errors.location && 'error-input'} type="text" name="location"/>
+        onBlur={handleBlur} className={errors.location && 'error-input'} type="text" 
+        name="location"/>
       </label>
       {errors.location && <p className="error-text">{errors.location}</p>}
-      <label style={{display: 'block'}}>
-        Date:
+      <label>
+        Ajankohta
         <DatePicker
         selected={values.date}
         onSelect={handleSelect}
+        showTimeSelect
+        dateFormat="Pp"
         />
       </label>
-      {!values.teams 
-        ? <p>No teams yet!</p> 
-      : <ul>{values.teams.map((team, i) => <li key={i}>{team.name}</li>)}</ul>
-      }
-      <label>
-        Add New Team:
-        <input value={values.team} onChange={handleChange} 
-        onBlur={handleBlur} type="text" name="team"/>
+      <label >
+        Eräkatto
+        <input value={values.maxRounds} onChange={handleChange} 
+        onBlur={handleBlur} className={errors.maxRounds && 'error-input'} type="number" 
+        name="maxRounds"/>
       </label>
-      <button onClick={addTeam}>Add</button>
-      {errors.team && <p className="error-text">{errors.team}</p>}
+      {errors.maxRounds && <p className="error-text">{errors.maxRounds}</p>}
+      <label>
+        Pistekatto
+        <input value={values.maxPoints} onChange={handleChange} 
+        onBlur={handleBlur} className={errors.maxPoints && 'error-input'} type="number" 
+        name="maxPoints"/>
+      </label>
+      {errors.maxPoints && <p className="error-text">{errors.maxPoints}</p>}
+      <label>
+        Paras eräkatosta
+        <input value={values.bestOfMaxRounds} onChange={handleChange} 
+        onBlur={handleBlur} className="checkbox" type="checkbox" 
+        name="bestOfMaxRounds"/>
+      </label>
+      <label>
+        Kahden erolla
+        <input value={values.winByTwo} onChange={handleChange} 
+        onBlur={handleBlur} className="checkbox" type="checkbox" 
+        name="winByTwo"/>
+      </label>
       <button disabled={isSubmitting} type="submit">
-        Submit
+        Luo
       </button>
-      {dbError && <p className="error-text">{dbError }</p>}
+      {dbResult && <p className="result">{dbResult}</p>}
     </form>
   )
 }

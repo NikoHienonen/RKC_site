@@ -10,9 +10,9 @@ router.use(bodyParser.json());
 const Tournament = require('../../models/Tournament');
 
 // load auxiliary routes
-const teams = require('./teams');
-
-router.use('/:tournamentId/teams', teams);
+const teams = require('./Teams');
+const matches = require('./Matches');
+const referees = require('./Referees');
 
 // Get all tournaments
 router.get('/', (req, res) => {
@@ -27,6 +27,7 @@ router.get('/', (req, res) => {
             name: doc.name,
             location: doc.location,
             date: doc.date,
+            defaultMatch: doc.defaultMatch,
             teams: doc.teams,
             referees: doc.referees.map(referee => {
               // Don't send the encrypted referee passwords
@@ -72,11 +73,12 @@ router.get('/:tournamentId', (req, res) => {
 
 //Create new tournament
 router.post('/', (req, res) => {
-  const { name, location, date } = req.body;
+  const { name, location, date, defaultMatch } = req.body;
   Tournament.create({
     name: name,
     location: location,
     date: date,
+    defaultMatch: defaultMatch
   })
     .then(tournament => {
       res.status(201).json({
@@ -95,15 +97,12 @@ router.post('/', (req, res) => {
 router.patch('/:tournamentId', (req ,res) => {
   const { tournamentId } = req.params;
   const updateFields = {};
-  for (const [key, value] of Object.entries(req.body)) {
-    console.log(key, value)
-    updateFields[key] = value;
-  }
-  Tournament.update({_id: tournamentId}, {
-    $set: updateFields
-  }
-  )
-  .exec()
+  console.log(req.body);
+
+  Tournament.findByIdAndUpdate(tournamentId, 
+    {
+      $set: req.body
+    })
   .then(result => {
     res.status(200).json({
       message: "Successfully updated"
@@ -117,20 +116,26 @@ router.patch('/:tournamentId', (req ,res) => {
 })
 
 // Delete a tournament by ID
-router.delete('/tournamentId', (req, res) => {
+router.delete('/:tournamentId', (req, res) => {
   const { tournamentId } = req.params;
-  Tournament.remove({_id: tournamentId})
-    .exec()
-    .then(result => {
-      res.status(200).json({
-        message: "Tournament deleted"
-      })
-    })
-    .catch(err => {
+  console.log("wtf")
+  Tournament.findByIdAndRemove(tournamentId, (err, result) => {
+    console.log("mitävittutuauauauauau")
+    if(err) {
       res.status(500).json({
         error: err
       });
-    });
+    } else {
+      res.status(200).json({
+        message: "Tournament deleted"
+      })
+    }
+  })
 });
+
+// Use auxiliary routes
+router.use('/:tournamentId/teams', teams);
+router.use('/:tournamentId/matches', matches);
+router.use('/:tournamentId/referees', referees);
 
 module.exports = router;

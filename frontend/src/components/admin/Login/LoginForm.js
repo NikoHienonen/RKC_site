@@ -20,7 +20,7 @@ export default function LoginForm() {
         value={values.username}
         onChange={handleChange}
         onBlur={handleBlur}
-        placeholder='Username'
+        placeholder='Käyttäjä'
       />
       <p className='errorMsg'>{errors.username}</p>
       <input 
@@ -28,12 +28,12 @@ export default function LoginForm() {
         value={values.password}
         onChange={handleChange}
         onBlur={handleBlur}
-        placeholder='Password'
+        placeholder='Salasana'
         type="password"
       />
       <p className='errorMsg'>{errors.password}</p>
       <button className="submit" disabled={isSubmitting}>
-        LOGIN
+        KIRJAUDU
       </button>
     </form>
   );

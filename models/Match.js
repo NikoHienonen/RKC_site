@@ -6,7 +6,15 @@ const MatchSchema = new Schema({
     type: String,
     required: true
   }
+  , homeName: {
+    type: String,
+    required: true
+  }
   , visitorId: {
+    type: String,
+    required: true
+  }
+  , visitorName: {
     type: String,
     required: true
   }

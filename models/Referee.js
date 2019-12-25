@@ -8,6 +8,7 @@ const RefereeSchema = new Schema({
   },
   password: {
     type: String,
+    default: "0000",
     required: true
   }, 
   matches: [{

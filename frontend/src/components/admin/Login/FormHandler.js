@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
+import { useAuthDataContext } from '../../utilities/AuthDataProvider';
 
 export default function FormHandler(initialState, validate, navigate) {
+  const { onLogin } = useAuthDataContext();
   const [values, setValues] = useState(initialState);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setSubmitting] = useState(false);
@@ -22,7 +24,8 @@ export default function FormHandler(initialState, validate, navigate) {
   function login() {
     if(values.username === 'vito') {
       if(values.password === 'rkcvolley') {
-        console.log('oikein')
+        onLogin(values.username);
+        window.location.reload();
       }
     }
   }

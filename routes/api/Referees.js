@@ -8,17 +8,22 @@ router.use(bodyParser.json());
 
 //Tournament Model
 const Tournament = require('../../models/Tournament');
-const Team = require('../../models/Team');
+const Referee = require('../../models/Referee');
 
-// Get teams by a tournament ID
+// Get referees by a tournament ID
 router.get('/', (req, res) => {
   const { tournamentId } = req.params;
   Tournament.findOne({_id: tournamentId})
     .then(tournament => {
-      const { teams } = tournament;
+      const { referees } = tournament;
       res.status(200).json({
-        count: teams.length,
-        teams: teams
+        count: referees.length,
+        referees: referees.map(ref => {
+          return {
+            name: ref.name,
+            matches: ref.matches
+          }
+        })
       });
     })
     .catch(err => {
@@ -28,19 +33,19 @@ router.get('/', (req, res) => {
     });
 });
 
-//Get one team from a tournament by tournament and team IDs
-router.get('/:teamId', (req, res) => {
-  const { tournamentId, teamId } = req.params;
+//Get one referee from a tournament by tournament and referee IDs
+router.get('/:refereeId', (req, res) => {
+  const { tournamentId, refereeId } = req.params;
   Tournament.findOne({_id: tournamentId})
     .then(tournament => {
-      const team = tournament.teams.id(teamId);
-      if(team) {
+      const referee = tournament.referees.id(refereeId);
+      if(match) {
         res.status(200).json({
-          team: team
+          referee: referee
         });
       } else {
         res.status(500).json({
-          error: "No team found"
+          error: "No referee found"
         })
       }
     })
@@ -51,12 +56,12 @@ router.get('/:teamId', (req, res) => {
     });
 });
 
-// Add teams to a tournament by a tournament ID
+// Add referees to a tournament by a tournament ID
 router.post('/', (req, res) => {
   const { tournamentId } = req.params;
-  const { teams } = req.body;
+  const { referees } = req.body;
   Tournament.findByIdAndUpdate(tournamentId,
-    {$set: {"teams": teams}},
+    {$set: {"referees": referees}},
     {new: true},
     (err, result) => {
       if(err) {
@@ -72,11 +77,12 @@ router.post('/', (req, res) => {
   );
 });
 
-//Update the teams of a tournament by ID
+//Update the referees of a tournament by ID
 router.patch('/', (req ,res) => {
   const { tournamentId } = req.params;
+  const { referees } = req.body;
   Tournament.findByIdAndUpdate(tournamentId, {
-    $set: {teams: req.body}
+    $set: {referees: referees}
   }
   )
   .then(result => {
@@ -91,11 +97,12 @@ router.patch('/', (req ,res) => {
   });
 })
 
-router.delete('/:teamId', (req, res) => {
-  const { teamId, tournamentId } = req.params;
+// Delete a referee by its ID
+router.delete('/:refereeId', (req, res) => {
+  const { refereeId, tournamentId } = req.params;
   Tournament.findByIdAndUpdate(tournamentId, {
     $pull: {
-      teams: { _id: teamId}
+      referees: { _id: refereeId}
     }
   })
     .then(result => {

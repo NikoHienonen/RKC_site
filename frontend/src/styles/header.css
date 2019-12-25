@@ -3,23 +3,29 @@ header {
 }
 header h1 {
   font-size: 3rem;
+  display: none;
+}
+header img {
+  width: 4rem;
+  margin: 1rem;
 }
 nav {
-  margin-left: 1rem;
+
 }
 nav a {
-  color: var(--orange);
+  color: var(--light-orange);
   background-color: black;
   text-decoration: none;
   display: inline-block;
   padding: 1rem 0.5rem;
   border: 2px solid var(--light-orange);
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 nav a:hover {
   cursor: pointer;
   color: grey;
 }
 nav a.active {
-  color: var(--light-orange);
+  color: black;
+  background-color: var(--orange);
 }
