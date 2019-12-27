@@ -8,12 +8,11 @@ class Team {
   }
 }
 
-export default function FormHandler(initialState, validate) {
+export default function FormHandler(initialState, validate, props) {
+  const emptyValues = initialState;
   const [values, setValues] = useState(initialState);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setSubmitting] = useState(false);
-  const [dbResult, setDBResult] = useState(null);
-
   useEffect(() => {
     if(isSubmitting) {
       const noErrors = Object.keys(errors).length === 0;
@@ -39,7 +38,9 @@ export default function FormHandler(initialState, validate) {
   
   function sendTournament(data) {
     postNewTournament(data, result => {
-      setDBResult(result.message)
+      alert(result.message ? result.message : result.error);
+      setValues(emptyValues);
+      props.history.push('/turnaukset');
     });
   }
 

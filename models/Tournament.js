@@ -62,7 +62,8 @@ const RefereeSchema = new Schema({
   },
   password: {
     type: String,
-    required: true
+    required: true,
+    default: "0000"
   }, 
   matches: [{
     type: Schema.Types.ObjectId,

@@ -5,10 +5,11 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import { default as FormHandler } from './AddNewFormHandler';
 import { default as ValidateValues } from './AddNewValidateValues';
+import Back from '../../../static/Back';
 
 const INITIAL_STATE = {
-  name: 'KEINOSEN TURNAUS',
-  location: 'Tieteenkatu 4',
+  name: '',
+  location: '',
   date: new Date(),
   maxRounds: 0,
   maxPoints: 0,
@@ -31,7 +32,7 @@ const INITIAL_STATE = {
   ]
 }
 
-export default function AddNew() {
+export default function AddNew(props) {
   const { 
     handleChange, 
     handleTeamsChange, 
@@ -41,8 +42,7 @@ export default function AddNew() {
     errors, 
     values, 
     isSubmitting, 
-    dbResult
-  } = FormHandler(INITIAL_STATE, ValidateValues);
+  } = FormHandler(INITIAL_STATE, ValidateValues, props);
 
   function handleSelect(date) {
     handleDateChange(date);
@@ -53,7 +53,9 @@ export default function AddNew() {
   }
  
   return(
-    <form onSubmit={submit}>
+    <div>
+      <h1>Lisää uusi turnaus</h1>
+      <form onSubmit={submit}>
       <label>
         Nimi
         <input value={values.name} onChange={handleChange} 
@@ -106,7 +108,8 @@ export default function AddNew() {
       <button disabled={isSubmitting} type="submit">
         Luo
       </button>
-      {dbResult && <p className="result">{dbResult}</p>}
     </form>
+    <Back className="m3-container" link={'/turnaukset'}/>
+    </div>
   )
 }

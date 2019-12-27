@@ -1,7 +1,9 @@
 form {
   margin: 0.5rem 0;
 }
-
+label {
+  display: block;
+}
 input {
   width: 100%;
   background-color: 'rgba(255,255,255,0.2)';
@@ -10,12 +12,10 @@ input {
   font-size: 1rem;
   margin: 0.2rem 0;
 }
-button.submit {
-  background-color: var(--orange);
-  padding: 0.25rem 1rem;
-  text-align: 'center';
-  color: 'white';
-  font-size: 1.2rem;
+div.react-datepicker-wrapper {
+  width: 100%;
+}
+button.submit, input.submit{
   width: 100%;
 }
 p.error-text {

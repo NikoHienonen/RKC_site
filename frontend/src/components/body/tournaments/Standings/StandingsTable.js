@@ -11,37 +11,43 @@ export default function StandingsTable({teams}) {
   };
   const sortedTeams = [...teams].sort(compare);
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>
-            Joukkue
-          </th>
-          <th>
-            Erät
-          </th>
-          <th>
-            V
-          </th>
-          <th>
-            H
-          </th>
-          <th>
-            Pts +/-
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {sortedTeams.map(team => {
-          return <tr key={team._id}>
-            <td>{team.name}</td>
-            <td>{team.roundsPlayed}</td>
-            <td>{team.roundsWon}</td>
-            <td>{team.roundsLost}</td>
-            <td>{team.pointsWon} / {team.pointsLost}</td>
+    <div className="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>
+              Joukkue
+            </th>
+            <th>
+              Erät
+            </th>
+            <th>
+              V
+            </th>
+            <th>
+              H
+            </th>
+            <th>
+              +/-
+            </th>
+            <th>Pisteet</th>
           </tr>
-        })}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {sortedTeams.map((team, index) => {
+            return <tr key={team._id}>
+              <th>{`${index+1}`}</th>
+              <td>{team.name}</td>
+              <td>{team.roundsPlayed}</td>
+              <td>{team.roundsWon}</td>
+              <td>{team.roundsLost}</td>
+              <td>{team.pointsWon} / {team.pointsLost}</td>
+              <th>{team.roundsWon}</th>
+            </tr>
+          })}
+        </tbody>
+      </table>
+    </div>
   );
 }

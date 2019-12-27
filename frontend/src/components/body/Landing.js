@@ -6,7 +6,7 @@ class Landing extends Component {
     return (
       <div>
           <div className="landing">
-          <img src="./assets/img/logo.png"/>
+          <img src="/assets/img/logo.png"/>
           <h1>Lentopallopalvelut</h1>
         </div>
         <Footer/>

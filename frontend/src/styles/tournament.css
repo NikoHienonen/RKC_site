@@ -1,0 +1,31 @@
+.tournament {
+  padding: 2rem 0.5rem;
+}
+div.actions {
+  margin: 1rem 0;
+}
+div.actions a, button {
+  display: block;
+  margin: 0.5rem;
+}
+
+button.delete {
+  border: black 1px solid;
+  background: var(--red);
+  color: white;
+}
+div.referee {
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+}
+div.referee > div, div.referee > button {
+  display: inline-block;
+}
+div.referee > button {
+  background-color: var(--red);
+  margin: 0;
+  margin-left: 0.5rem;
+}
+div.referee > button > i {
+  color: black;
+}

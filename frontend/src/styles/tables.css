@@ -1,5 +1,18 @@
+table { 
+  border-collapse: collapse;
+  border-spacing: 0 1rem; 
+  margin: 1rem 0;
+  margin-bottom: 2rem;
+}
+
+tr {
+  border-bottom: 1px solid black;
+  line-height: 1.5rem;
+}
+
 td, th {
   text-align: center;
-  min-width: 2rem;
+  min-width: 2.5rem;
   overflow: auto;
+  max-width: 8rem;
 }

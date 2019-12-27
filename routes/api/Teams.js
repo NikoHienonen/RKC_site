@@ -72,6 +72,26 @@ router.post('/', (req, res) => {
   );
 });
 
+//Add a team to teams of a tournament by ID
+router.patch('/:name', (req ,res) => {
+  const { tournamentId, name } = req.params;
+  const team = new Team({name: name});
+  Tournament.findByIdAndUpdate(tournamentId, {
+    $push: {teams: team}
+  }
+  )
+  .then(result => {
+    res.status(200).json({
+      message: "Successfully updated"
+    });
+  })
+  .catch(err => {
+    res.status(500).json({
+      error: err
+    });
+  });
+});
+
 //Update the teams of a tournament by ID
 router.patch('/', (req ,res) => {
   const { tournamentId } = req.params;
@@ -89,13 +109,15 @@ router.patch('/', (req ,res) => {
       error: err
     });
   });
-})
+});
 
-router.delete('/:teamId', (req, res) => {
-  const { teamId, tournamentId } = req.params;
+// Delete a team from a tournament by id
+router.delete('/:name', (req, res) => {
+  const { name, tournamentId } = req.params;
+  console.log(name)
   Tournament.findByIdAndUpdate(tournamentId, {
     $pull: {
-      teams: { _id: teamId}
+      teams: { name: name}
     }
   })
     .then(result => {

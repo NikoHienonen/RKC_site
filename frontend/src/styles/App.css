@@ -1,11 +1,11 @@
 :root {
-  --orange: #F7882F;
+  --orange: rgba(247, 136, 47, 0.8);
   --light-orange: #E6C043;
   --blue: #76BED0;
   --overlay: rgba(25, 25, 35, 0.8);
   --black: #000000;
   --shallow-background: rgba(0,0,0, 0.85);
-  --red: #F6511D;
+  --red: #F71735;
   --menu-speed: 0.75s;
 }
 
@@ -16,6 +16,7 @@
 @import url("menu.css");
 @import url("card.css");
 @import url("buttons.css");
+@import url("tournament.css");
 
 * {
   box-sizing: border-box;
@@ -95,6 +96,10 @@ div.landing h1 {
   width: 100%;
   text-align: center;
   font-size: 1.8rem;
+}
+
+div.table-container {
+  overflow-x: auto;
 }
 
 footer {

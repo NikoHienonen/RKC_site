@@ -15,8 +15,8 @@ import MatchSchedule from './components/body/tournaments/MatchSchedule/MatchSche
 
 import Menu from './components/body/tournaments/Modify/Menu';
 import ModifyInfo from './components/body/tournaments/Modify/ModifyInfo';
-import ModifyTeams from './components/body/tournaments/Modify/ModifyTeams';
-import ModifyReferees from './components/body/tournaments/Modify/ModifyReferees';
+import ModifyTeams from './components/body/tournaments/Modify/Teams/ModifyTeams';
+import ModifyReferees from './components/body/tournaments/Modify/Referees/ModifyReferees';
 import ModifyMatches from './components/body/tournaments/Modify/ModifyMatches';
 
 import Login from './components/admin/Login/LoginForm';

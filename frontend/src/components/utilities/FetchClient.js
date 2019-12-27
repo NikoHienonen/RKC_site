@@ -40,10 +40,26 @@ export function updateTournament(id, callback) {
     .catch(err => callback(err));
 }
 
-export function deleteTeam(tournamentId, teamId, callback) {
-  axios.delete(`/api/tournaments/${tournamentId}/teams/${teamId}`)
+export function addReferee(referee, tournamentId, callback) {
+  axios.patch(`/api/tournaments/${tournamentId}/referees/add`, referee)
     .then(response => {
       callback(response);
     })
     .catch(err => callback(err));
 }
+export function deleteReferee(referee, tournamentId, callback) {
+  console.log(referee)
+  axios.delete(`/api/tournaments/${tournamentId}/referees/${referee.name}`)
+    .then(response => callback(response))
+    .catch(err => callback(err));
+}
+export function addTeam(team, id, callback) {
+  axios.patch(`/api/tournaments/${id}/teams/${team}`)
+    .then(response => callback(response))
+    .catch(err => callback(err));
+}
+export function deleteTeam(team, id, callback) {
+  axios.delete(`/api/tournaments/${id}/teams/${team}`)
+    .then(response => callback(response))
+    .catch(err => callback(err));
+} 

@@ -29,10 +29,7 @@ router.get('/', (req, res) => {
             date: doc.date,
             defaultMatch: doc.defaultMatch,
             teams: doc.teams,
-            referees: doc.referees.map(referee => {
-              // Don't send the encrypted referee passwords
-              return {name: referee.name, matches: referee.matches}
-            }),
+            referees: doc.referees,
             matches: doc.matches,
             request: {
               type: 'GET',
@@ -97,8 +94,6 @@ router.post('/', (req, res) => {
 router.patch('/:tournamentId', (req ,res) => {
   const { tournamentId } = req.params;
   const updateFields = {};
-  console.log(req.body);
-
   Tournament.findByIdAndUpdate(tournamentId, 
     {
       $set: req.body
@@ -118,9 +113,7 @@ router.patch('/:tournamentId', (req ,res) => {
 // Delete a tournament by ID
 router.delete('/:tournamentId', (req, res) => {
   const { tournamentId } = req.params;
-  console.log("wtf")
   Tournament.findByIdAndRemove(tournamentId, (err, result) => {
-    console.log("mitävittutuauauauauau")
     if(err) {
       res.status(500).json({
         error: err

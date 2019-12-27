@@ -16,14 +16,10 @@ router.get('/', (req, res) => {
   Tournament.findOne({_id: tournamentId})
     .then(tournament => {
       const { referees } = tournament;
+      console.log(referees)
       res.status(200).json({
         count: referees.length,
-        referees: referees.map(ref => {
-          return {
-            name: ref.name,
-            matches: ref.matches
-          }
-        })
+        referees: referees
       });
     })
     .catch(err => {
@@ -97,12 +93,34 @@ router.patch('/', (req ,res) => {
   });
 })
 
-// Delete a referee by its ID
-router.delete('/:refereeId', (req, res) => {
-  const { refereeId, tournamentId } = req.params;
+//Add a referee to tournament referees by ID
+router.patch('/add', (req ,res) => {
+  const { tournamentId } = req.params;
+  const { referee } = req.body;
+  console.log(referee);
+  Tournament.findByIdAndUpdate(tournamentId, {
+    $push: {referees: referee}
+  }
+  )
+  .then(result => {
+    res.status(200).json({
+      message: "Successfully updated"
+    });
+  })
+  .catch(err => {
+    res.status(500).json({
+      error: err
+    });
+  });
+})
+
+// Delete a referee by its name
+router.delete('/:name', (req, res) => {
+  const { tournamentId, name } = req.params;
+  console.log(name)
   Tournament.findByIdAndUpdate(tournamentId, {
     $pull: {
-      referees: { _id: refereeId}
+      referees: { name: name}
     }
   })
     .then(result => {
