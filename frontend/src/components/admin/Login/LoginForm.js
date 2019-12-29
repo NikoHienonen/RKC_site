@@ -8,11 +8,16 @@ const INITIAL_STATE = {
   password: ''
 }
 
-export default function LoginForm() {
+export default function LoginForm(props) {
+  const navigate = () => {
+    props.history.push('/');
+    window.location.reload();
+  }
+  
   const {
     handleChange, handleBlur, submit, errors, values, isSubmitting
-  } = FormHandler(INITIAL_STATE, ValidateValues);
-
+  } = FormHandler(INITIAL_STATE, ValidateValues, navigate);
+  
   return (
     <form className='admin-login' onSubmit={submit}>
       <input

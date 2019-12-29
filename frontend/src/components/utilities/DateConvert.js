@@ -8,6 +8,7 @@ export default function DateConvert(dateString) {
       case 4: return 'Pe';
       case 5: return 'La';
       case 6: return 'Su';   
+      default: return '';
     }
   }
   const date = new Date(dateString);

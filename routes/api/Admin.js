@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const bcrypt = require('bcrypt');
 
 // Use body-parser
 router.use(bodyParser.urlencoded({extended: false}));
@@ -9,74 +10,59 @@ router.use(bodyParser.json());
 //Admin Model
 const Admin = require('../../models/Admin');
 
-// Get all Admins
-router.get('/', (req, res) => {
-  Admin.find()
-    .exec()
-    .then(documents => {
-      res.status(200).json({
-        count: documents.length,
-        admins: documents.map(doc => {
-          return {
-            _id: doc._id,
-            name: doc.name,
-            matches: doc.matches,
-            request: {
-              type: 'GET',
-              url: 'http://localhost:5000/api/admins/'+doc._id
-            }
-          }
-        })
-      });
-    })
-    .catch(err => {
-      res.status(500).json({
-        error: err
-      });
-    })
-});
-
-// Get admin by id
-router.get('/:adminId', (req, res) => {
-  const { adminId } = req.params;
-  Admin.findById(adminId)
-    .exec()
-    .then(admin => {
-      if (!admin) {
-        return res.status(404).json({
-          message: "Admin not found"
-        });
-      }
-      res.status(200).json({
-        admin: admin
-      });
-    })
-    .catch(err => {
-      res.status(500).json({
-        error: err
-      })
+// Admin login
+router.post('/login', (req, res) => {
+  const { username, password } = req.body;
+  Admin.findOne({username: username}, (err, admin) => {
+    if(err) res.status(500).json({
+      err: err
     });
+    if(!admin) {
+      res.status(404).json({
+        err: 'Ei käyttäjää'
+      })
+    } else {
+      bcrypt.compare(password, admin.password, (err, response) => {
+        if(err) {
+          console.log(err)
+          res.status(500).json({
+            err: 'Network error'
+          });
+        } else if(!response) {
+          res.status(401).json({
+            err: 'Väärä salasana'
+          });
+        } else {
+          res.status(200).json({
+            message: 'Kirjauduttu'
+          })
+        }
+      })
+    }
+  });
 });
 
 //Create new admin
 router.post('/', (req, res) => {
-  const { name, location, date } = req.body;
-  Admin.create({
-    name: name,
-    location: location,
-    date: date,
-  })
-    .then(admin => {
-      res.status(201).json({
-        message: "Admin created",
-        admin: admin
-      })
+  console.log(req.body)
+  const { username, password } = req.body;
+  bcrypt.hash(password, 10, (err, hash) => {
+    Admin.create({
+      username: username,
+      password: hash
     })
-    .catch(err => {
-      res.status(500).json({
-        error: err
+      .then(admin => {
+        res.status(201).json({
+          message: "Admin created",
+          admin: admin.username
+        })
+      })
+      .catch(err => {
+        res.status(500).json({
+          error: err
+        });
       });
-    });
+  })
 })
 
 // Update a admin by ID

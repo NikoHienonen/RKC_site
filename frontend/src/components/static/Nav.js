@@ -1,10 +1,8 @@
 import React  from 'react';
-import { useAuthDataContext } from '../utilities/AuthDataProvider';
 import { NavLink } from 'react-router-dom';
 import Logout from '../admin/Logout';
 
 export default function Nav(){
-  const { onLogout } = useAuthDataContext;
   const authData = sessionStorage.getItem('currentAuthData');
   const onClick = (e) => {
     if(e.target.className !== "unclickable") {

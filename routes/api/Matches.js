@@ -28,6 +28,37 @@ router.get('/', (req, res) => {
     });
 });
 
+// Get matches by a referee name from a tournament
+router.get('/byReferee/:refereeName', (req, res) => {
+  const { tournamentId, refereeName } = req.params;
+  Tournament.findById(tournamentId, (err, tournament) => {
+    if(err) {
+      res.status(500).json({
+        err: err
+      });
+    } else {
+      const { matches } = tournament; 
+      if(!matches || matches.length === 0) {
+        res.status(400).json({
+          err: 'Ei otteluita'
+        });
+      } else {
+        const foundMatches = matches.filter(match => match.refereeName === refereeName);
+        if(!foundMatches || foundMatches.length === 0) {
+          res.status(400).json({
+            err: `Tuomarilla ${refereeName} ei ole otteluita`
+          })
+        } else {
+          res.status(200).json({
+            count: foundMatches.length,
+            matches: foundMatches
+          })
+        }
+      }
+    }
+  });
+});
+
 //Get one match from a tournament by tournament and match IDs
 router.get('/:matchId', (req, res) => {
   const { tournamentId, matchId } = req.params;
@@ -51,12 +82,12 @@ router.get('/:matchId', (req, res) => {
     });
 });
 
-// Add matches to a tournament by a tournament ID
+// Add a match to a tournament by a tournament ID
 router.post('/', (req, res) => {
   const { tournamentId } = req.params;
-  const { matches } = req.body;
+  const { match } = req.body;
   Tournament.findByIdAndUpdate(tournamentId,
-    {$set: {"matches": matches}},
+    {$push: {"matches": match}},
     {new: true},
     (err, result) => {
       if(err) {
@@ -65,31 +96,91 @@ router.post('/', (req, res) => {
         });
       } else {
         res.status(201).send({
-          count: result
+          result: result.matches
         });
       }
     }
   );
 });
 
-//Update the matches of a tournament by ID
-router.patch('/', (req ,res) => {
-  const { tournamentId } = req.params;
-  Tournament.findByIdAndUpdate(tournamentId, {
-    $set: {matches: req.body}
-  }
-  )
-  .then(result => {
+// Update a match by its ID and the tournament ID
+router.patch('/:matchId', (req, res) => {
+  const { tournamentId, matchId } = req.params;
+  const { match } = req.body;
+  console.log(match)
+  Tournament.findById(tournamentId, (err, tournament) => {
+    if(err) res.status(500).json({
+      err: err
+    })
+    if(!tournament) res.status(404).json({
+      err: "Turnausta ei löytynyt"
+    });
+    let foundMatch = tournament.matches.id(matchId);
+
+    if(!foundMatch) res.status(404).json({
+      err: "Ottelua ei löytynyt"
+    });
+
+    foundMatch = match;
+    tournament.save();
     res.status(200).json({
-      message: "Successfully updated"
-    });
-  })
-  .catch(err => {
-    res.status(500).json({
-      error: err
-    });
+      msg: "Ottelu päivitetty onnistuneesti"
+    })
   });
-})
+});
+
+//Save the stats of a match after it has been played of a tournament by ID
+router.patch('/played/:matchId', (req ,res) => {
+  const { tournamentId, matchId } = req.params;
+  const { match } = req.body;
+  console.log(match)
+  Tournament.findById(tournamentId, (err, tournament) => {
+    if(err) {
+      console.log("no tournament")
+      res.status(500).json({
+        error: err
+      });
+    } else {
+      const foundMatch = tournament.matches.id(matchId);
+      if(!foundMatch) {
+        console.log("no match")
+        res.status(404).json({
+          error: "No match found"
+        })
+      } else {
+        foundMatch.homeRoundsWon = match.homeRoundsWon;
+        foundMatch.visitorRoundsWon = match.visitorRoundsWon;
+        foundMatch.homePointsWon = match.homePointsWon;
+        foundMatch.visitorPointsWon = match.visitorPointsWon;
+
+        const home = tournament.teams.find(team => team.name === match.homeTeam);
+        const visitor = tournament.teams.find(team => team.name === match.visitorTeam);
+        if(!home || !visitor) {
+          console.log("no team")
+          res.status(404).json({
+            error: "No team found"
+          })
+        } else {
+          const { homeRoundsWon, visitorRoundsWon, homePointsWon, visitorPointsWon} = match;
+          home.roundsPlayed += Number(homeRoundsWon) + Number(visitorRoundsWon);
+          home.roundsWon += Number(homeRoundsWon);
+          home.roundsLost += Number(visitorRoundsWon);
+          home.pointsWon += Number(homePointsWon);
+          home.pointsLost += Number(visitorPointsWon);
+          visitor.roundsPlayed += Number(homeRoundsWon) + Number(visitorRoundsWon);
+          visitor.roundsWon += Number(visitorRoundsWon);
+          visitor.roundsLost += Number(homeRoundsWon);
+          visitor.pointsWon += Number(visitorPointsWon);
+          visitor.pointsLost += Number(homePointsWon);
+          tournament.save()
+          res.status(201).json({
+            msg: "Succesfully updated"
+          });
+        }
+      }
+    }
+  })
+});
 
 // Delete a match by its ID
 router.delete('/:matchId', (req, res) => {

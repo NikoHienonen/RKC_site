@@ -73,8 +73,9 @@ router.post('/', (req, res) => {
 });
 
 //Add a team to teams of a tournament by ID
-router.patch('/:name', (req ,res) => {
-  const { tournamentId, name } = req.params;
+router.post('/addTeam', (req ,res) => {
+  const { tournamentId } = req.params;
+  const { name } = req.body;
   const team = new Team({name: name});
   Tournament.findByIdAndUpdate(tournamentId, {
     $push: {teams: team}

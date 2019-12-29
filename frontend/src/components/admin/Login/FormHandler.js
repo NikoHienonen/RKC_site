@@ -1,19 +1,20 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
+import { login } from '../../utilities/FetchClient';
 import { useAuthDataContext } from '../../utilities/AuthDataProvider';
 
 export default function FormHandler(initialState, validate, navigate) {
-  const { onLogin } = useAuthDataContext();
   const [values, setValues] = useState(initialState);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setSubmitting] = useState(false);
-  const [dbError, setDBError] = useState(null);
+  console.log(useAuthDataContext)
+  const { onLogin } = useAuthDataContext();
 
   useEffect(() => {
     if(isSubmitting) {
       const noErrors = Object.keys(errors).length === 0;
       console.log(noErrors)
       if(noErrors) {
-        login();
+        attemptLogin();
         setSubmitting(false);
       } else {
         setSubmitting(false);
@@ -21,13 +22,25 @@ export default function FormHandler(initialState, validate, navigate) {
     }
   }, [errors]);
 
-  function login() {
-    if(values.username === 'vito') {
-      if(values.password === 'rkcvolley') {
-        onLogin(values.username);
-        window.location.reload();
-      }
+  function attemptLogin() {
+    const admin = {
+      username: values.username,
+      password: values.password
     }
+    login(admin, result => {
+      console.log(result)
+      if(result.status === 200) {
+        onLogin(values.username);
+        navigate();
+      }
+      else if(result.status === 500) {
+        alert('Network error');
+      } else if(result.status === 404) {
+        alert('Väärä käyttäjä');
+      } else if(result.status === 401) {
+        alert('Väärä salasana');
+      }
+    });
   }
 
   function handleChange(e) {

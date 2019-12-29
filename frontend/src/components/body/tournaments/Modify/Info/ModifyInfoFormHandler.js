@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-import { updateTournament } from '../../../utilities/FetchClient';
+import { updateTournament } from '../../../../utilities/FetchClient';
 
 class Team {
   constructor(name){

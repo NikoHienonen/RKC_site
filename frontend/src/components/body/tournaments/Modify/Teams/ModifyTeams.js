@@ -1,4 +1,4 @@
-import React, { useContext, useState, Fragment } from 'react';
+import React, { useContext, Fragment } from 'react';
 
 import { TournamentContext } from '../../../../utilities/TournamentContext';
 import NoTournament from '../../../../static/NoTournament';

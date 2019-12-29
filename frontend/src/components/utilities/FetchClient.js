@@ -63,3 +63,13 @@ export function deleteTeam(team, id, callback) {
     .then(response => callback(response))
     .catch(err => callback(err));
 } 
+export function login(admin, callback) {
+  axios.post(`/api/admin/login`, admin)
+    .then(result => callback(result))
+    .catch(err => callback(err));
+}
+export function deleteMatchById(matchId, tournamentId, callback) {
+  axios.delete(`/api/tournaments/${tournamentId}/matches/${matchId}`)
+    .then(response => callback(response))
+    .catch(err => callback(err));
+}

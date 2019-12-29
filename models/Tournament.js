@@ -30,12 +30,12 @@ const TeamSchema = new Schema({
 
 const MatchSchema = new Schema({
   homeTeam: {
-    type: Schema.Types.ObjectId,
-    ref: 'Team'
+    type: 'String',
+    required: true
   }
   , visitorTeam: {
-    type: Schema.Types.ObjectId,
-    ref: 'Team'
+    type: 'String',
+    required: true
   }
   , homeRoundsWon: {
     type: Number
@@ -52,6 +52,18 @@ const MatchSchema = new Schema({
   , visitorPointsWon: {
     type: Number
     , default: 0 
+  },
+  defaultMatch: {
+    required: true,
+    type: {
+      maxRounds: Number
+      , maxPoints: Number
+      , bestOfMaxRounds: Boolean
+      , winByTwo: Boolean
+    },
+  }
+  , refereeName: {
+    type: String
   }
 });
 

@@ -1,18 +1,17 @@
 import React, { useContext } from 'react';
 
-import { TournamentContext } from '../../../utilities/TournamentContext';
-import NoTournament from '../../../static/NoTournament';
-import Back from "../../../static/Back";
+import { TournamentContext } from '../../../../utilities/TournamentContext';
+import NoTournament from '../../../../static/NoTournament';
+import Back from "../../../../static/Back";
 
 import DatePicker from "react-datepicker";
 
-import FormHandler from '../../../utilities/FormHandler';
-import ValidateValues from '../../../utilities/ValidateValues';
+import FormHandler from '../../../../utilities/FormHandler';
+import ValidateValues from '../../../../utilities/ValidateValues';
 
 export default function ModifyInfo(props) {
-  const {tournament, setTournament} = useContext(TournamentContext);
+  const {tournament} = useContext(TournamentContext);
 
-  // Redirect the fuck outta here if no tournament
   if(!tournament) {props.history.push('/turnaukset')}
 
   const INITIAL_STATE = {

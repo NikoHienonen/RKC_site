@@ -6,7 +6,7 @@ import {getTournaments} from '../../../components/utilities/FetchClient';
 
 export default function Tournaments(props) {
   const [tournaments, setTournaments] = useState([]);
-  const tournament = useContext(TournamentContext);
+  const context = useContext(TournamentContext);
 
   useEffect(() => {
     if(tournaments.length === 0) {
@@ -21,9 +21,7 @@ export default function Tournaments(props) {
   return (
     <div>
       <h1>Turnaukset</h1>
-      <TournamentContext.Consumer>
-      {context => (
-        <div>
+      <div>
           { tournaments.length === 0
           ? <div className="m3-container">
               <p>Ei turnauksia vielä!</p>
@@ -46,8 +44,6 @@ export default function Tournaments(props) {
           )}
           <Link to={'/turnaukset/uusi'}>Lisää uusi</Link>
         </div>
-      )}
-    </TournamentContext.Consumer>
     </div>
   )
 }

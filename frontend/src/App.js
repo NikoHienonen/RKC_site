@@ -14,10 +14,10 @@ import Standings from './components/body/tournaments/Standings/Standings';
 import MatchSchedule from './components/body/tournaments/MatchSchedule/MatchSchedule';
 
 import Menu from './components/body/tournaments/Modify/Menu';
-import ModifyInfo from './components/body/tournaments/Modify/ModifyInfo';
+import ModifyInfo from './components/body/tournaments/Modify/Info/ModifyInfo';
 import ModifyTeams from './components/body/tournaments/Modify/Teams/ModifyTeams';
 import ModifyReferees from './components/body/tournaments/Modify/Referees/ModifyReferees';
-import ModifyMatches from './components/body/tournaments/Modify/ModifyMatches';
+import ModifyMatches from './components/body/tournaments/Modify/Matches/ModifyMatches';
 
 import Login from './components/admin/Login/LoginForm';
 
