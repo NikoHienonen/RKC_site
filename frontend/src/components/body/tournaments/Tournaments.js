@@ -2,11 +2,10 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { TournamentContext } from '../../utilities/TournamentContext';
 
-import {getTournaments} from '../../../components/utilities/FetchClient';
-
 export default function Tournaments(props) {
   const [tournaments, setTournaments] = useState([]);
   const context = useContext(TournamentContext);
+  const { getTournaments } = context;
 
   useEffect(() => {
     if(tournaments.length === 0) {
@@ -32,7 +31,7 @@ export default function Tournaments(props) {
                 {tournaments.map(tournament => 
                   <li key={tournament._id}>
                     <button className="card" onClick={() => {
-                      context.setTournament(tournament);
+                      context.setTournamentId(tournament._id);
                       props.history.push('/turnaukset/'+tournament._id);
                     }}>
                       {tournament.name}

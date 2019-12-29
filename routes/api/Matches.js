@@ -86,6 +86,7 @@ router.get('/:matchId', (req, res) => {
 router.post('/', (req, res) => {
   const { tournamentId } = req.params;
   const { match } = req.body;
+  console.log(match)
   Tournament.findByIdAndUpdate(tournamentId,
     {$push: {"matches": match}},
     {new: true},

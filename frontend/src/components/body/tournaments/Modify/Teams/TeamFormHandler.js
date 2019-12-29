@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 
 import { addTeam } from '../../../../utilities/FetchClient';
 
-export default function FormHandler(initialState, validate, id) {
+export default function FormHandler(initialState, validate, id, toggleRefresh) {
   const [values, setValues] = useState(initialState);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setSubmitting] = useState(false);
@@ -11,7 +11,10 @@ export default function FormHandler(initialState, validate, id) {
     if(isSubmitting) {
       const noErrors = Object.keys(errors).length === 0;
       if(noErrors) {
-        postTeam(values.name);
+        const data = {
+          name: values.name
+        }
+        postTeam(data);
         setSubmitting(false);
       } else {
         setSubmitting(false);
@@ -21,7 +24,9 @@ export default function FormHandler(initialState, validate, id) {
   
   function postTeam(data) {
     addTeam(data, id, result => {
-      alert(result.err ? result.err : 'Lisäys onnistui');
+      //alert(result.data.msg ? result.data.msg : 'Lisäys epäonnistui');
+      console.log(result)
+      toggleRefresh();
     });
   }
 

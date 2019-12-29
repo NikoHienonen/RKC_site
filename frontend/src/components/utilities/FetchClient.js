@@ -32,8 +32,8 @@ export function deleteTournament(id, callback) {
     .catch(err => callback(err));
 }
 
-export function updateTournament(id, callback) {
-  axios.patch(`/api/tournaments/${id}`)
+export function updateTournament(id, data, callback) {
+  axios.patch(`/api/tournaments/${id}`, data)
     .then(response => {
       callback(response);
     })
@@ -48,13 +48,12 @@ export function addReferee(referee, tournamentId, callback) {
     .catch(err => callback(err));
 }
 export function deleteReferee(referee, tournamentId, callback) {
-  console.log(referee)
   axios.delete(`/api/tournaments/${tournamentId}/referees/${referee.name}`)
     .then(response => callback(response))
     .catch(err => callback(err));
 }
 export function addTeam(team, id, callback) {
-  axios.patch(`/api/tournaments/${id}/teams/${team}`)
+  axios.post(`/api/tournaments/${id}/teams/addTeam`, team)
     .then(response => callback(response))
     .catch(err => callback(err));
 }
@@ -65,6 +64,11 @@ export function deleteTeam(team, id, callback) {
 } 
 export function login(admin, callback) {
   axios.post(`/api/admin/login`, admin)
+    .then(result => callback(result))
+    .catch(err => callback(err));
+}
+export function addMatch(match, tournamentId, callback) {
+  axios.post(`/api/tournaments/${tournamentId}/matches/`, match)
     .then(result => callback(result))
     .catch(err => callback(err));
 }

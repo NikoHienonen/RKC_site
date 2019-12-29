@@ -52,6 +52,10 @@ const MatchSchema = new Schema({
   , visitorPointsWon: {
     type: Number
     , default: 0 
+  }
+  , refereeName: {
+    type: String,
+    required: true
   },
   defaultMatch: {
     required: true,
@@ -61,9 +65,6 @@ const MatchSchema = new Schema({
       , bestOfMaxRounds: Boolean
       , winByTwo: Boolean
     },
-  }
-  , refereeName: {
-    type: String
   }
 });
 

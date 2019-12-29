@@ -2,7 +2,7 @@ import React from 'react';
 import RefereeValidateValues from './RefereeValidateValues';
 import RefereeFormHandler from './RefereeFormHandler';
 
-export default function AddReferee({INITIAL_VALUES, _id}) {
+export default function AddReferee({INITIAL_VALUES, _id, toggleRefresh}) {
   const { 
     handleChange, 
     handleBlur, 
@@ -10,7 +10,7 @@ export default function AddReferee({INITIAL_VALUES, _id}) {
     errors, 
     values, 
     isSubmitting, 
-  } = RefereeFormHandler(INITIAL_VALUES, RefereeValidateValues, _id);
+  } = RefereeFormHandler(INITIAL_VALUES, RefereeValidateValues, _id, toggleRefresh);
 
   return (
     <div className="m3-container">

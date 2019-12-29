@@ -1,4 +1,4 @@
-import React, { useContext, Fragment } from 'react';
+import React, { useContext, Fragment, useEffect, useState } from 'react';
 
 import { TournamentContext } from '../../../utilities/TournamentContext';
 import NoTournament from '../../../static/NoTournament';
@@ -6,8 +6,21 @@ import Back from '../../../static/Back';
 import StandingsTable from './StandingsTable';
 
 export default function Standings(props) {
+  const [tournament, setTournament] = useState(null);
   const context = useContext(TournamentContext);
-  const { tournament } = context;
+  const { getTournamentById } = context;
+
+  useEffect(() => {
+    if(!tournament) {
+      const tournamentId = sessionStorage.getItem('tournamentId');
+      if(tournamentId) {
+        getTournamentById(tournamentId, (result) => {
+          console.log(result)
+          setTournament(result);
+        })
+      }
+    }
+  }, [])
   return (
     <div className="mb3-container">
       <h1>Sarjataulukko</h1>
