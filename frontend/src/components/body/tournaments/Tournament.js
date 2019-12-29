@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect, useState, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
 import { TournamentContext } from '../../utilities/TournamentContext'; 
@@ -8,15 +8,30 @@ import { deleteTournament } from '../../utilities/FetchClient';
 import NoTournamentFound from '../../static/NoTournament';
 
 export default function Tournament(props) {
-  
+  const [tournament, setTournament] = useState(null);
+  const [refresh, setRefresh] = useState(true);
+  const context = useContext(TournamentContext);
+  const { getTournamentById } = context;
+
+  useEffect(() => {
+    if(!tournament || refresh) {
+      setRefresh(false);
+      const tournamentId = sessionStorage.getItem('tournamentId');
+      if(tournamentId) {
+        getTournamentById(tournamentId, (result) => {
+          console.log(result)
+          setTournament(result);
+        })
+      }
+    }
+  }, [])
+
   return (
-    <TournamentContext.Consumer>
-      {context => {
-        const { tournament } = context;
-        return !tournament
-        ? <NoTournamentFound/>
-        : <div className="card tournament">
-          <h1>{tournament.name}</h1>
+    <div className="card tournament">
+      { !tournament
+      ? <NoTournamentFound/>
+      : <Fragment>
+        <h1>{tournament.name}</h1>
           <div>
             <p>{tournament.location}</p>
             <p>{DateConvert(tournament.date)}</p>
@@ -29,7 +44,6 @@ export default function Tournament(props) {
                   console.log(result);
                   alert(result.message ? "Poisto epäonnistui" : "Poisto Onnistui");
                   props.history.push('/turnaukset');
-                  window.location.reload();
                 })}
               >
                 Poista
@@ -37,8 +51,8 @@ export default function Tournament(props) {
             </div>
             <Back link='/turnaukset'/>
           </div>
-        </div>
-      }}
-    </TournamentContext.Consumer>
+        </Fragment>
+    }
+  </div>
   );
 }

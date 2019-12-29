@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 
-import { addReferee } from '../../../../utilities/FetchClient';
+import { addMatch } from '../../../../utilities/FetchClient';
 
-export default function FormHandler(initialState, validate, _id, toggleRefresh) {
+export default function MatchFormHandler(defaultMatch, initialState, 
+  validate, _id, toggleRefresh) {
   const [values, setValues] = useState(initialState);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setSubmitting] = useState(false);
@@ -11,26 +12,33 @@ export default function FormHandler(initialState, validate, _id, toggleRefresh) 
     if(isSubmitting) {
       const noErrors = Object.keys(errors).length === 0;
       if(noErrors) {
-        const data = {
-          referee: {
-            name: values.name, 
-            password: values.password
-          }
-        };
-        sendReferee(data);
-        setSubmitting(false);
+        if(values.home === values.visitor) {
+          alert('Joukkue ei voi pelata itseään vastaan')
+        } else {
+          const data = {
+            match: {
+              homeTeam: values.home, 
+              visitorTeam: values.visitor,
+              refereeName: values.refereeName,
+              defaultMatch: defaultMatch
+            }
+          };
+          sendMatch(data);
+          setSubmitting(false);
+        }
       } else {
         setSubmitting(false);
       }
     }
   }, [errors]);
   
-  function sendReferee(referee) {
-    addReferee(referee, _id, result => {
+  function sendMatch(data) {
+    console.log(data)
+    addMatch(data, _id, result => {
       console.log(result)
       alert(result.err ? 'Lisäys epäonnistui' : 'Lisäys onnistui');
       toggleRefresh();
-    })
+    });
   }
   function handleChange(e) {
     setValues({

@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { TournamentContext } from './TournamentContext';
+import { getTournamentById } from './FetchClient';
+import  {getTournaments } from './FetchClient';
 
 const Provider = props => {
-  const [state, setState] = useState(null);
+  const setTournamentId = (id) => {
+    sessionStorage.setItem('tournamentId', id);
+  }
   return (
     <TournamentContext.Provider
       value={{
-        tournament: state,
-        setTournament: (tournament) => {
-          setState(tournament);
-        }
+        setTournamentId: setTournamentId,
+        getTournamentById: getTournamentById,
+        getTournaments: getTournaments
       }}
     >
       {props.children}

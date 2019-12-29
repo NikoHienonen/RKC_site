@@ -1,7 +1,7 @@
 import React from 'react';
 import { deleteReferee } from '../../../../utilities/FetchClient';
 
-export default function Referee({referee, id}) {
+export default function Referee({referee, id, toggleRefresh}) {
   return (
     <div className="referee card">
       <div>
@@ -9,7 +9,8 @@ export default function Referee({referee, id}) {
         <p>Salasana: {referee.password}</p>
       </div>
       <button onClick={() => deleteReferee(referee, id, result => {
-        alert(result);
+        alert(result.err ? 'Poisto epäonnistui' : 'Poisto onnistui');
+        toggleRefresh();
       })}>
         <i className="fas fa-trash-alt"></i>
       </button>

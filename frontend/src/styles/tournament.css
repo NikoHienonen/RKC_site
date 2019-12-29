@@ -29,3 +29,10 @@ div.referee > button {
 div.referee > button > i {
   color: black;
 }
+
+div.teams ul li {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}

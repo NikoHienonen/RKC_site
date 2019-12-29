@@ -51,32 +51,13 @@ router.get('/:teamId', (req, res) => {
     });
 });
 
-// Add teams to a tournament by a tournament ID
-router.post('/', (req, res) => {
-  const { tournamentId } = req.params;
-  const { teams } = req.body;
-  Tournament.findByIdAndUpdate(tournamentId,
-    {$set: {"teams": teams}},
-    {new: true},
-    (err, result) => {
-      if(err) {
-        res.status(500).json({
-          error: err
-        });
-      } else {
-        res.status(201).send({
-          count: result
-        });
-      }
-    }
-  );
-});
 
 //Add a team to teams of a tournament by ID
 router.post('/addTeam', (req ,res) => {
   const { tournamentId } = req.params;
   const { name } = req.body;
   const team = new Team({name: name});
+  console.log(team)
   Tournament.findByIdAndUpdate(tournamentId, {
     $push: {teams: team}
   }

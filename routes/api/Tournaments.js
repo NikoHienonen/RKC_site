@@ -93,10 +93,13 @@ router.post('/', (req, res) => {
 // Update a tournament by ID
 router.patch('/:tournamentId', (req ,res) => {
   const { tournamentId } = req.params;
-  const updateFields = {};
+  const { name, date, location, defaultMatch } = req.body;
   Tournament.findByIdAndUpdate(tournamentId, 
     {
-      $set: req.body
+      name: name,
+      date: date,
+      location: location,
+      defaultMatch: defaultMatch
     })
   .then(result => {
     res.status(200).json({

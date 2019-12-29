@@ -8,11 +8,10 @@ class Team {
   }
 }
 
-export default function FormHandler(initialState, validate) {
+export default function FormHandler(initialState, validate, id, navigate) {
   const [values, setValues] = useState(initialState);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setSubmitting] = useState(false);
-  const [dbResult, setDBResult] = useState(null);
 
   useEffect(() => {
     if(isSubmitting) {
@@ -38,10 +37,10 @@ export default function FormHandler(initialState, validate) {
   }, [errors]);
   
   function sendTournament(data) {
-    /*postNewTournament(data, result => {
-      setDBResult(result.message)
-    });*/
-    console.log(data);
+    updateTournament(id, data, result => {
+      alert(result.data.message ? result.data.message : 'Päivitys epäonnistui');
+      navigate();
+    });
   }
 
   function handleDateChange(date) {
@@ -83,6 +82,6 @@ export default function FormHandler(initialState, validate) {
     setSubmitting(true);
   }
 
-  return { handleChange, handleTeamsChange, handleDateChange, 
+  return { handleChange, handleDateChange, 
     handleBlur, submit, errors, values, isSubmitting };
 }

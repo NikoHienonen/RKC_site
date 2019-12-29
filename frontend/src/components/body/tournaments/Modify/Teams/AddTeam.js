@@ -2,7 +2,7 @@ import React from 'react';
 import TeamValidateValues from './TeamValidateValues';
 import TeamFormHandler from './TeamFormHandler';
 
-export default function AddTeam({INITIAL_VALUES, _id}) {
+export default function AddTeam({INITIAL_VALUES, _id, toggleRefresh}) {
   const { 
     handleChange, 
     handleBlur, 
@@ -10,7 +10,7 @@ export default function AddTeam({INITIAL_VALUES, _id}) {
     errors, 
     values, 
     isSubmitting, 
-  } = TeamFormHandler(INITIAL_VALUES, TeamValidateValues, _id);
+  } = TeamFormHandler(INITIAL_VALUES, TeamValidateValues, _id, toggleRefresh);
 
   return (
     <div className="m3-container">
