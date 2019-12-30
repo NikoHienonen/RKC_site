@@ -20,9 +20,10 @@ const AuthDataProvider = props => {
     sessionStorage.clear();
   };
 
-  const onLogin = newAuthData => {
+  const onLogin = (newAuthData, id) => {
     setAuthData(newAuthData);
     sessionStorage.setItem('currentAuthData', newAuthData);
+    sessionStorage.setItem('adminId', id);
   }
 
   const authDataValue = {

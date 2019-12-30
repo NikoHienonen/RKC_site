@@ -15,6 +15,7 @@ export default function InfoForm({tournament, id, navigate}) {
     date: new Date(tournament.date),
     maxRounds: tournament.defaultMatch.maxRounds,
     maxPoints: tournament.defaultMatch.maxPoints,
+    timeOuts: tournament.defaultMatch.timeOuts,
     bestOfMaxRounds: tournament.defaultMatch.bestOfMaxRounds,
     winByTwo: tournament.defaultMatch.winByTwo
   }
@@ -77,6 +78,13 @@ export default function InfoForm({tournament, id, navigate}) {
             name="maxPoints"/>
           </label>
           {errors.maxPoints && <p className="error-text">{errors.maxPoints}</p>}
+          <label style={{display: 'block'}}>
+            Timeoutit per erä:
+            <input value={values.timeOuts} onChange={handleChange} 
+            onBlur={handleBlur} className={errors.timeOuts && 'error-input'} type="number" 
+            name="timeOuts"/>
+          </label>
+          {errors.timeOuts && <p className="error-text">{errors.timeOuts}</p>}
           <label style={{display: 'block'}}>
             Paras etäkatosta:
             <input value={values.bestOfMaxRounds} onChange={handleChange} 

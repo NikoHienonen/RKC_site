@@ -34,7 +34,7 @@ ul {
 }
 
 .App{
-  margin: auto;
+  margin: 0 auto;
   background-color: var(--orange);
   min-height: 100vh;
   width: 100vw;
@@ -103,11 +103,9 @@ div.table-container {
 }
 
 footer {
-  width: 100vw;
-  left: 0;
+  width: 100%;
   bottom: 0;
   padding: 1rem;
-  position: fixed;
   display: flex;
   align-items: center;
   justify-content: center;

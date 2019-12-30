@@ -5,12 +5,9 @@ header h1 {
   font-size: 3rem;
   display: none;
 }
-header img {
-  width: 4rem;
+header img.logo {
+  width: 20vw;
   margin: 1rem;
-}
-nav {
-
 }
 nav a {
   color: var(--light-orange);

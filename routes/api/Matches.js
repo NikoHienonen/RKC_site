@@ -1,6 +1,7 @@
 const router = require('express').Router({mergeParams: true});
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
 
 // Use body-parser
 router.use(bodyParser.urlencoded({extended: false}));
@@ -11,7 +12,7 @@ const Tournament = require('../../models/Tournament');
 const Match = require('../../models/Match');
 
 // Get matches by a tournament ID
-router.get('/', (req, res) => {
+router.get('/', verifyToken, (req, res) => {
   const { tournamentId } = req.params;
   Tournament.findOne({_id: tournamentId})
     .then(tournament => {
@@ -29,7 +30,7 @@ router.get('/', (req, res) => {
 });
 
 // Get matches by a referee name from a tournament
-router.get('/byReferee/:refereeName', (req, res) => {
+router.get('/byReferee/:refereeName', verifyToken, (req, res) => {
   const { tournamentId, refereeName } = req.params;
   Tournament.findById(tournamentId, (err, tournament) => {
     if(err) {
@@ -60,7 +61,7 @@ router.get('/byReferee/:refereeName', (req, res) => {
 });
 
 //Get one match from a tournament by tournament and match IDs
-router.get('/:matchId', (req, res) => {
+router.get('/:matchId', verifyToken, (req, res) => {
   const { tournamentId, matchId } = req.params;
   Tournament.findOne({_id: tournamentId})
     .then(tournament => {
@@ -83,7 +84,7 @@ router.get('/:matchId', (req, res) => {
 });
 
 // Add a match to a tournament by a tournament ID
-router.post('/', (req, res) => {
+router.post('/', verifyToken, (req, res) => {
   const { tournamentId } = req.params;
   const { match } = req.body;
   console.log(match)
@@ -105,7 +106,7 @@ router.post('/', (req, res) => {
 });
 
 // Update a match by its ID and the tournament ID
-router.patch('/:matchId', (req, res) => {
+router.patch('/:matchId', verifyToken, (req, res) => {
   const { tournamentId, matchId } = req.params;
   const { match } = req.body;
   console.log(match)
@@ -131,10 +132,9 @@ router.patch('/:matchId', (req, res) => {
 });
 
 //Save the stats of a match after it has been played of a tournament by ID
-router.patch('/played/:matchId', (req ,res) => {
+router.patch('/played/:matchId', verifyToken, (req ,res) => {
   const { tournamentId, matchId } = req.params;
   const { match } = req.body;
-  console.log(match)
   Tournament.findById(tournamentId, (err, tournament) => {
     if(err) {
       console.log("no tournament")
@@ -143,6 +143,7 @@ router.patch('/played/:matchId', (req ,res) => {
       });
     } else {
       const foundMatch = tournament.matches.id(matchId);
+      console.log(foundMatch)
       if(!foundMatch) {
         console.log("no match")
         res.status(404).json({
@@ -154,8 +155,8 @@ router.patch('/played/:matchId', (req ,res) => {
         foundMatch.homePointsWon = match.homePointsWon;
         foundMatch.visitorPointsWon = match.visitorPointsWon;
 
-        const home = tournament.teams.find(team => team.name === match.homeTeam);
-        const visitor = tournament.teams.find(team => team.name === match.visitorTeam);
+        const home = tournament.teams.find(team => team.name === foundMatch.homeTeam);
+        const visitor = tournament.teams.find(team => team.name === foundMatch.visitorTeam);
         if(!home || !visitor) {
           console.log("no team")
           res.status(404).json({
@@ -163,16 +164,28 @@ router.patch('/played/:matchId', (req ,res) => {
           })
         } else {
           const { homeRoundsWon, visitorRoundsWon, homePointsWon, visitorPointsWon} = match;
-          home.roundsPlayed += Number(homeRoundsWon) + Number(visitorRoundsWon);
+
+          if(homeRoundsWon > visitorRoundsWon) {
+            home.gamesWon++;
+            visitor.gamesLost++;
+          } else if (homeRoundsWon < visitorRoundsWon) {
+            home.gamesLost++;
+            visitor.gamesWon++;
+          } else {
+            home.gamesDraw++;
+            visitor.gamesDraw++;
+          }
           home.roundsWon += Number(homeRoundsWon);
           home.roundsLost += Number(visitorRoundsWon);
           home.pointsWon += Number(homePointsWon);
           home.pointsLost += Number(visitorPointsWon);
+          home.gamesPlayed++;
           visitor.roundsPlayed += Number(homeRoundsWon) + Number(visitorRoundsWon);
           visitor.roundsWon += Number(visitorRoundsWon);
           visitor.roundsLost += Number(homeRoundsWon);
           visitor.pointsWon += Number(visitorPointsWon);
           visitor.pointsLost += Number(homePointsWon);
+          visitor.gamesPlayed++;
           tournament.save()
           res.status(201).json({
             msg: "Succesfully updated"
@@ -184,7 +197,7 @@ router.patch('/played/:matchId', (req ,res) => {
 });
 
 // Delete a match by its ID
-router.delete('/:matchId', (req, res) => {
+router.delete('/:matchId', verifyToken, (req, res) => {
   const { matchId, tournamentId } = req.params;
   Tournament.findByIdAndUpdate(tournamentId, {
     $pull: {
@@ -202,5 +215,24 @@ router.delete('/:matchId', (req, res) => {
       });
     });
 });
+
+function verifyToken(req, res, next) {
+  // Get Auth header value
+  const bearerHeader = req.headers['authorization'];
+
+  // Check if bearer is undefined
+  if(typeof bearerHeader !== 'undefined') {
+    // Deconstruct bearer
+    const bearer = bearerHeader.split(' ');
+    const bearerToken = bearer[1];
+    req.token = bearerToken;
+    next(); 
+  } else {
+    // Forbidden
+    res.status(403).json({
+      err: 'Unauthorized'
+    });
+  }
+}
 
 module.exports = router;

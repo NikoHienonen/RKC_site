@@ -6,7 +6,19 @@ const TeamSchema = new Schema({
     type: String
     , required: true
   }
-  , roundsPlayed: {
+  , gamesPlayed: {
+    type: Number
+    , default: 0 
+  }
+  , gamesWon: {
+    type: Number
+    , default: 0 
+  }
+  , gamesLost: {
+    type: Number
+    , default: 0 
+  }
+  , gamesDraw: {
     type: Number
     , default: 0 
   }
@@ -25,10 +37,18 @@ const TeamSchema = new Schema({
   , pointsLost: {
     type: Number
     , default: 0 
+  },
+  gamesPlayed: {
+    type: Number
+    , default: 0
   }
 });
 
 const MatchSchema = new Schema({
+  startingTime: {
+    type: 'String',
+    required: true
+  },
   homeTeam: {
     type: 'String',
     required: true
@@ -62,6 +82,7 @@ const MatchSchema = new Schema({
     type: {
       maxRounds: Number
       , maxPoints: Number
+      , timeOuts: Number
       , bestOfMaxRounds: Boolean
       , winByTwo: Boolean
     },
@@ -76,13 +97,7 @@ const RefereeSchema = new Schema({
   password: {
     type: String,
     required: true,
-    default: "0000"
-  }, 
-  matches: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Match',
-    default: []
-  }]
+  }
 });
 
 var TournamentSchema = new Schema({
@@ -102,6 +117,7 @@ var TournamentSchema = new Schema({
   defaultMatch: {
     maxRounds: Number
     , maxPoints: Number
+    , timeOuts: Number
     , bestOfMaxRounds: Boolean
     , winByTwo: Boolean
   },

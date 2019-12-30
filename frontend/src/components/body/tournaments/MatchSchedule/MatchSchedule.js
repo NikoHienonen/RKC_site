@@ -28,14 +28,14 @@ export default function MatchSchedule() {
       ? <NoTournament/>
       :<Fragment>
         <h1>Otteluohjelma</h1>
-        <div className="m3-container">
           {
             !tournament.matches || tournament.matches.length === 0
             ? <p>Turnauksessa ei ole vielä otteluita.</p>
             : <MatchTable matches={tournament.matches}/>
           }
+        <div className="m3-container">
+          <Back link={`/turnaukset/${tournament.name}/`}/>
         </div>
-        <Back link={`/turnaukset/${tournament.name}/`}/>
       </Fragment>
     }
     </div>

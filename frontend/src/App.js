@@ -20,6 +20,7 @@ import ModifyReferees from './components/body/tournaments/Modify/Referees/Modify
 import ModifyMatches from './components/body/tournaments/Modify/Matches/ModifyMatches';
 
 import Login from './components/admin/Login/LoginForm';
+import ChangePass from './components/admin/ChangePassword/ChangePassForm';
 
 import Provider from './components/utilities/Provider';
 import AuthDataProvider from './components/utilities/AuthDataProvider';
@@ -45,20 +46,21 @@ function App() {
                   <PrivateRoute exact path="/koti" component={Landing}/>
                   <PrivateRoute exact path="/turnaukset" component={Tournaments}/>
                   <PrivateRoute exact path="/turnaukset/uusi" component={AddNew}/>
-                  <PrivateRoute excat path="/turnaukset/:name/sarjataulukko" 
+                  <PrivateRoute exact path="/turnaukset/:name/sarjataulukko" 
                     component={Standings}/>
                   <PrivateRoute excat path="/turnaukset/:name/otteluohjelma" 
                     component={MatchSchedule}/>
                   <PrivateRoute excat path="/turnaukset/:name/muokkaa/yleinen" 
                     component={ModifyInfo}/>
                   <PrivateRoute exact path="/turnaukset/:name" component={Tournament}/>
-                  <PrivateRoute excat path="/turnaukset/:name/muokkaa/joukkueet"
+                  <PrivateRoute exact path="/turnaukset/:name/muokkaa/joukkueet"
                     component={ModifyTeams}/>
                   <PrivateRoute excat path="/turnaukset/:name/muokkaa/tuomarit" 
                     component={ModifyReferees}/>
-                  <PrivateRoute excat path="/turnaukset/:name/muokkaa/ottelut" 
+                  <PrivateRoute exact path="/turnaukset/:name/muokkaa/ottelut" 
                     component={ModifyMatches}/>
                     <PrivateRoute excat path="/turnaukset/:name/muokkaa" component={Menu}/>
+                  <PrivateRoute exact path="/admin/vaihda-salasana" component={ChangePass}/>
                   <PrivateRoute exact path="/kirjaudu" component={Login}/>
                   <PrivateRoute component={NoMatch}/>
                 </Switch>

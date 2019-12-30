@@ -20,6 +20,7 @@ export default function MatchFormHandler(defaultMatch, initialState,
               homeTeam: values.home, 
               visitorTeam: values.visitor,
               refereeName: values.refereeName,
+              startingTime: values.startingTime,
               defaultMatch: defaultMatch
             }
           };
@@ -40,7 +41,16 @@ export default function MatchFormHandler(defaultMatch, initialState,
       toggleRefresh();
     });
   }
+
+  function handleTimeChange(time) {
+    setValues({
+      ...values,
+      startingTime: time
+    });
+  }
+
   function handleChange(e) {
+    console.log(e)
     setValues({
       ...values,
       [e.target.name]: e.target.value
@@ -56,5 +66,5 @@ export default function MatchFormHandler(defaultMatch, initialState,
     setErrors(validationErrors);
     setSubmitting(true);
   }
-  return { handleChange, handleBlur, submit, errors, values, isSubmitting };
+  return { handleChange, handleBlur, handleTimeChange, submit, errors, values, isSubmitting };
 }

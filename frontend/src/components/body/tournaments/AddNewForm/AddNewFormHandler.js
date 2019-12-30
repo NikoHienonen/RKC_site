@@ -2,12 +2,6 @@ import { useState, useEffect } from 'react'
 
 import { postNewTournament } from '../../../utilities/FetchClient';
 
-class Team {
-  constructor(name){
-    this.name = name;
-  }
-}
-
 export default function FormHandler(initialState, validate, props) {
   const emptyValues = initialState;
   const [values, setValues] = useState(initialState);
@@ -24,6 +18,7 @@ export default function FormHandler(initialState, validate, props) {
           defaultMatch: {
             maxRounds: Number(values.maxRounds),
             maxPoints: Number(values.maxPoints),
+            timeOuts: Number(values.timeOuts),
             bestOfMaxRounds: values.bestOfMaxRounds,
             winByTwo: values.winByTwo
           }
@@ -51,20 +46,6 @@ export default function FormHandler(initialState, validate, props) {
     });
   }
 
-  function handleTeamsChange() {
-    const validationErrors = validate(values);
-    if(!validationErrors.team) {
-      let teams = values.teams;
-      let newTeam = new Team(values.team);
-      teams.push(newTeam);
-      setValues({
-        ...values,
-        teams,
-        team: ''
-      });
-    }
-  }
-
   function handleChange(e) {
     const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
     setValues({
@@ -85,6 +66,6 @@ export default function FormHandler(initialState, validate, props) {
     setSubmitting(true);
   }
 
-  return { handleChange, handleTeamsChange, handleDateChange, 
-    handleBlur, submit, errors, values, isSubmitting };
+  return { handleChange, handleDateChange, handleBlur, submit, 
+    errors, values, isSubmitting };
 }

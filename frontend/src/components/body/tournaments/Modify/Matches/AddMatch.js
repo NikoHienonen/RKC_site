@@ -3,17 +3,20 @@ import React from 'react';
 import MatchValidateValues from './MatchValidateValues';
 import MatchFormHandler from './MatchFormHandler';
 
+import TimePicker from 'react-time-picker';
 import Select from './Select';
 
 export default function AddMatch({tournament, navigate, toggleRefresh}) {
   const INITIAL_VALUES = {
     home: tournament.teams[0].name,
     visitor: tournament.teams[0].name,
-    refereeName: tournament.referees[0].name
+    refereeName: tournament.referees[0].name,
+    startingTime: "10:00"
   }
   const { 
     handleChange, 
     handleBlur, 
+    handleTimeChange,
     submit, 
     errors, 
     values, 
@@ -24,7 +27,7 @@ export default function AddMatch({tournament, navigate, toggleRefresh}) {
   return (
     <div className="m3-container">
       <h2>Lisää ottelu:</h2>
-      <form onSubmit={submit}>
+      <form onSubmit={submit} onBlur={handleBlur}>
         <label style={{display: 'block'}}>
           Koti:
           <Select className={errors.home && 'error-input'} array={tournament.teams} 
@@ -37,6 +40,15 @@ export default function AddMatch({tournament, navigate, toggleRefresh}) {
            value={values.visitor} onChange={handleChange} name="visitor" />
         </label>
         {errors.visitor && <p className="error-text">{errors.visitor}</p>}
+        <label style={{display: 'block'}}>
+          Aika:
+          <TimePicker
+            onChange={handleTimeChange}
+            value={values.startingTime}
+            disableClock={true}
+          />
+        </label>
+        {errors.startingTime && <p className="error-text">{errors.startingTime}</p>}
         <label style={{display: 'block'}}>
           Tuomari:
           <Select className={errors.referee && 'error-input'} array={tournament.referees} 

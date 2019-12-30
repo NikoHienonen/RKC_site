@@ -6,6 +6,9 @@ export default function MatchesTable({id, matches, deleteMatchById, toggleRefres
       <table>
         <thead>
           <tr>
+          <th>
+              Aika
+            </th>
             <th>
               Koti
             </th>
@@ -28,9 +31,10 @@ export default function MatchesTable({id, matches, deleteMatchById, toggleRefres
         <tbody>
           {matches.map((match) => {
             const {homeTeam, visitorTeam, homeRoundsWon, 
-              visitorRoundsWon, refereeName} = match;
+              visitorRoundsWon, startingTime, refereeName} = match;
             console.log(match)
             return <tr key={match._id}>
+              <td>{startingTime}</td>
               <td>{homeTeam}</td>
               <td>-</td>
               <td>{visitorTeam}</td>

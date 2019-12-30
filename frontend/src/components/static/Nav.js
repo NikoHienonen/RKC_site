@@ -28,6 +28,14 @@ export default function Nav(){
               <NavLink to="/turnaukset" className="menu-item" 
               activeClassName='active'>Turnaukset</NavLink>
             </li>
+            {
+              authData
+              ? <li>
+                  <NavLink to="/admin/vaihda-salasana" className="menu-item"
+                activeClassName='active'>Vaihda salasana</NavLink> 
+                </li>
+              : null
+            }
             <li>
               {
                 authData

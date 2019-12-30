@@ -13,23 +13,9 @@ const INITIAL_STATE = {
   date: new Date(),
   maxRounds: 0,
   maxPoints: 0,
+  timeOuts: 0,
   bestOfMaxRounds: false,
   winByTwo: false,
-  team: '',
-  teams: [
-    {
-      name: "RKC"
-    },
-    {
-      name: "Lempo"
-    },
-    {
-      name: "Aoba Johsai"
-    },
-    {
-      name: "Shiratorizawa"
-    },
-  ]
 }
 
 export default function AddNew(props) {
@@ -47,11 +33,6 @@ export default function AddNew(props) {
   function handleSelect(date) {
     handleDateChange(date);
   }
-  function addTeam(e) {
-    e.preventDefault();
-    handleTeamsChange();
-  }
- 
   return(
     <div>
       <h1>Lisää uusi turnaus</h1>
@@ -93,6 +74,13 @@ export default function AddNew(props) {
         name="maxPoints"/>
       </label>
       {errors.maxPoints && <p className="error-text">{errors.maxPoints}</p>}
+      <label>
+        Aikalisät per erä
+        <input value={values.timeOuts} onChange={handleChange} 
+        onBlur={handleBlur} className={errors.timeOuts && 'error-input'} type="number" 
+        name="timeOuts"/>
+      </label>
+      {errors.timeOuts && <p className="error-text">{errors.timeOuts}</p>}
       <label>
         Paras eräkatosta
         <input value={values.bestOfMaxRounds} onChange={handleChange} 

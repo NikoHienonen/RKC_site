@@ -25,14 +25,14 @@ mongoose.set('useFindAndModify', false);
 //DB configuration
 const db = require('./conf/keys').mongoURI;
 
-//connect Mongo
+// connect Mongo
 mongoose.connect(db, {
   useNewUrlParser: true
 })
   .then(() => console.log('MongoDB connected.'))
   .catch(err => console.log(err));
 
-  //connect mongoose
+// connect mongoose
 mongoose.connect(db, {
   useNewUrlParser: true
 })
@@ -40,9 +40,9 @@ mongoose.connect(db, {
   .catch(err => console.log(err));
 
 //Use routes
-
 app.use('/api/tournaments', tournaments);
 app.use('/api/admin', admin);
+
 
 const port = process.env.PORT || 5000;
 

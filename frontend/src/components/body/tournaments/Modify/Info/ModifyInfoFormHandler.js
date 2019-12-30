@@ -2,12 +2,6 @@ import { useState, useEffect } from 'react'
 
 import { updateTournament } from '../../../../utilities/FetchClient';
 
-class Team {
-  constructor(name){
-    this.name = name;
-  }
-}
-
 export default function FormHandler(initialState, validate, id, navigate) {
   const [values, setValues] = useState(initialState);
   const [errors, setErrors] = useState({});
@@ -24,6 +18,7 @@ export default function FormHandler(initialState, validate, id, navigate) {
           defaultMatch: {
             maxRounds: Number(values.maxRounds),
             maxPoints: Number(values.maxPoints),
+            timeOuts: Number(values.timeOuts),
             bestOfMaxRounds: values.bestOfMaxRounds,
             winByTwo: values.winByTwo
           }
@@ -38,7 +33,7 @@ export default function FormHandler(initialState, validate, id, navigate) {
   
   function sendTournament(data) {
     updateTournament(id, data, result => {
-      alert(result.data.message ? result.data.message : 'Päivitys epäonnistui');
+      alert(result.data ? result.data.message : 'Päivitys  epäonnistui');
       navigate();
     });
   }
@@ -49,19 +44,7 @@ export default function FormHandler(initialState, validate, id, navigate) {
       date: date
     });
   }
-  function handleDateChange(date) {
-    setValues({
-      ...values,
-      date: date
-    });
-  }
-  function handleChange(e) {
-    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
-    setValues({
-      ...values,
-      [e.target.name]: value
-    });
-  }
+
   function handleChange(e) {
     const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
     setValues({
@@ -82,6 +65,6 @@ export default function FormHandler(initialState, validate, id, navigate) {
     setSubmitting(true);
   }
 
-  return { handleChange, handleDateChange, 
-    handleBlur, submit, errors, values, isSubmitting };
+  return { handleChange, handleDateChange, handleBlur, submit, 
+    errors, values, isSubmitting };
 }

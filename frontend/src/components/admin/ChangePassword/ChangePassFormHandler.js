@@ -1,19 +1,16 @@
-import { useState, useEffect, useContext } from 'react'
-import { login } from '../../utilities/FetchClient';
-import { useAuthDataContext } from '../../utilities/AuthDataProvider';
+import { useState, useEffect } from 'react'
+import { changePassword } from '../../utilities/FetchClient';
 
-export default function FormHandler(initialState, validate, navigate) {
+export default function ChangePassFormHandler(initialState, validate, navigate, adminId) {
   const [values, setValues] = useState(initialState);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setSubmitting] = useState(false);
-  console.log(useAuthDataContext)
-  const { onLogin } = useAuthDataContext();
 
   useEffect(() => {
     if(isSubmitting) {
       const noErrors = Object.keys(errors).length === 0;
       if(noErrors) {
-        attemptLogin();
+        changePass();
         setSubmitting(false);
       } else {
         setSubmitting(false);
@@ -21,19 +18,19 @@ export default function FormHandler(initialState, validate, navigate) {
     }
   }, [errors]);
 
-  function attemptLogin() {
-    const admin = {
-      username: values.username,
-      password: values.password
+  function changePass() {
+    const data = {
+      password: values.password,
+      newPassword: values.newPassword
     }
-    login(admin, result => {
+    changePassword(adminId, data, result => {
       console.log(result.status)
       if(result.status === 200) {
-        onLogin(result.data.token, result.data.id);
+        alert('Salasana vaihdettu');
         navigate();
       }
       else {
-        alert('Väärä käyttäjä tai salasana')
+        alert('Väärä salasana')
       }
     });
   }
@@ -47,6 +44,7 @@ export default function FormHandler(initialState, validate, navigate) {
 
   function handleBlur() {
     const validationErrors = validate(values);
+    setErrors(validationErrors);
   }
 
   function submit(e) {

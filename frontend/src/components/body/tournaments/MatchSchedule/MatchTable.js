@@ -7,6 +7,9 @@ export default function MatchTable({matches}) {
         <thead>
           <tr>
             <th>
+              Aika
+            </th>
+            <th>
               Koti
             </th>
             <th>
@@ -25,8 +28,9 @@ export default function MatchTable({matches}) {
         <tbody>
           {matches.map((match) => {
             const {homeTeam, visitorTeam, homeRoundsWon, 
-              visitorRoundsWon, refereeName} = match;
+              visitorRoundsWon, refereeName, startingTime} = match;
             return <tr key={match._id}>
+              <td>{startingTime}</td>
               <td>{homeTeam}</td>
               <td>-</td>
               <td>{visitorTeam}</td>

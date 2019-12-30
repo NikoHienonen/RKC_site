@@ -22,5 +22,8 @@ export default function ValidateValues(values) {
   } else if (values.maxPoints === 0 || values.maxPoints < 0) {
     errors.maxPoints = 'Pistekaton on oltava enemmän kuin nolla';
   }
+  if(!values.timeOuts) {
+    errors.timeOuts = 'Timeout on pakollinen';
+  }
   return errors;
 }
