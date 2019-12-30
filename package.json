@@ -1,7 +1,10 @@
 {
   "name": "RKC_site",
   "version": "1.0.0",
-  "description": "",
+  "description": "RKC-Volley site/api",
+  "engines": {
+    "node": "10.14.1"
+  },
   "main": "index.js",
   "scripts": {
     "client-install": "npm install --prefix frontend",
