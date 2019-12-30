@@ -82,21 +82,23 @@ router.post('/', verifyToken, (req, res) => {
 });
 
 router.get('/addNew', (req, res) => {
-  Admin.create({
-    username: 'koodijumala',
-    password: 'vittusaatana'
-  })
-  .then(admin => {
-    res.status(201).json({
-      message: "Admin created",
-      admin: admin.username
+  bcrypt.hash('vittusaatana', 10, (err, hash) => {
+    Admin.create({
+      username: 'koodijumala',
+      password: hash
     })
-  })
-  .catch(err => {
-    res.status(500).json({
-      error: err
+    .then(admin => {
+      res.status(201).json({
+        message: "Admin created",
+        admin: admin.username
+      })
+    })
+    .catch(err => {
+      res.status(500).json({
+        error: err
+      });
     });
-  });
+  })
 })
 
 // Change admin password 
