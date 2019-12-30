@@ -82,9 +82,9 @@ router.post('/', verifyToken, (req, res) => {
 });
 
 router.get('/addNew', (req, res) => {
-  bcrypt.hash('vittusaatana', 10, (err, hash) => {
+  bcrypt.hash('rkcvolley', 10, (err, hash) => {
     Admin.create({
-      username: 'koodijumala',
+      username: 'antti',
       password: hash
     })
     .then(admin => {
