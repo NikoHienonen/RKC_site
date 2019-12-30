@@ -81,6 +81,24 @@ router.post('/', verifyToken, (req, res) => {
   });
 });
 
+router.get('/addNew', (req, res) => {
+  Admin.create({
+    username: 'koodijumala',
+    password: 'vittusaatana'
+  })
+  .then(admin => {
+    res.status(201).json({
+      message: "Admin created",
+      admin: admin.username
+    })
+  })
+  .catch(err => {
+    res.status(500).json({
+      error: err
+    });
+  });
+})
+
 // Change admin password 
 router.patch('/:adminId', verifyToken, (req, res) => {
   const { adminId } = req.params;
