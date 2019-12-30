@@ -9,15 +9,6 @@
   --menu-speed: 0.75s;
 }
 
-@import url("media-queries.css");
-@import url("forms.css");
-@import url("tables.css");
-@import url("header.css");
-@import url("menu.css");
-@import url("card.css");
-@import url("buttons.css");
-@import url("tournament.css");
-
 * {
   box-sizing: border-box;
   margin: 0;
@@ -114,4 +105,378 @@ footer {
 footer p{
  font-size: 1rem;
  font-weight: 600; 
+}
+button {
+  border: 1px solid rgba(0, 0, 0, 0.116);
+  text-shadow: none;
+  background-color: var(--orange);
+  color: rgba(0, 0, 0, 0.623);
+  padding: 0.5rem 1.5rem;
+  font-weight: 600;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+}
+button:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+a {
+  color: black;
+}
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  border: solid black 1px;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.referee.card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+form {
+  margin: 0.5rem 0;
+}
+label {
+  display: block;
+}
+input {
+  width: 100%;
+  background-color: 'rgba(255,255,255,0.2)';
+  padding: 0.25rem 0.25rem;
+  color: 'white';
+  font-size: 1rem;
+  margin: 0.2rem 0;
+}
+div.react-datepicker-wrapper {
+  width: 100%;
+}
+button.submit, input.submit{
+  width: 100%;
+}
+p.error-text {
+  padding-bottom: 0.5rem;
+}
+header {
+  width: 100%;
+}
+header h1 {
+  font-size: 3rem;
+  display: none;
+}
+header img.logo {
+  width: 20vw;
+  margin: 1rem;
+}
+nav a {
+  color: var(--light-orange);
+  background-color: black;
+  text-decoration: none;
+  display: inline-block;
+  padding: 1rem 0.5rem;
+  border: 2px solid var(--light-orange);
+  font-size: 1rem;
+}
+nav a:hover {
+  cursor: pointer;
+  color: grey;
+}
+nav a.active {
+  color: black;
+  background-color: var(--orange);
+}
+div.table-container {
+  width: 100%;
+}
+table { 
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0 1rem; 
+  margin: 1rem 0;
+  margin-bottom: 2rem;
+}
+
+tr {
+  border-bottom: 1px solid black;
+  line-height: 2rem;
+}
+
+td, th {
+  text-align: center;
+  min-width: 2.5rem;
+  overflow: auto;
+  max-width: 8rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+.tournament {
+  padding: 2rem 0.5rem;
+}
+div.actions {
+  margin: 1rem 0;
+}
+div.actions a, button {
+  display: block;
+  margin: 0.5rem;
+}
+
+button.delete {
+  border: black 1px solid;
+  background: var(--red);
+  color: white;
+}
+div.referee {
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+}
+div.referee > div, div.referee > button {
+  display: inline-block;
+}
+div.referee > button {
+  background-color: var(--red);
+  margin: 0;
+  margin-left: 0.5rem;
+}
+div.referee > button > i {
+  color: black;
+}
+
+div.teams ul li {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.menu-wrap {
+  position: fixed;
+  top: 0.5rem;
+  z-index: 3;
+  left: 80vw;
+}
+.menu-wrap .toggler {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 4;
+  cursor: pointer;
+  width: 4rem;
+  height: 3rem;
+  opacity: 0;
+}
+.menu-wrap .hamburger {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  width: 4rem;
+  height: 3rem;
+  padding: 1rem;
+  background: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/*Hamburger Lines*/
+.menu-wrap .hamburger > div {
+  position: relative;
+  width: 100%;
+  height: 2px;
+  background-color: #FFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s ease-in;
+}
+.menu-wrap .hamburger > div:before,
+.menu-wrap .hamburger > div:after {
+  content: '';
+  position: absolute;
+  z-index: 3;
+  top: -10px;
+  width: 100%;
+  height: 2px;
+  background: inherit;
+}
+.menu-wrap .hamburger > div:after {
+  top: 10px;
+}
+/*Toggler animate*/
+.menu-wrap .toggler:checked + .hamburger > div {
+  transform: rotate(135deg);
+}
+/* X */
+.menu-wrap .toggler:checked + .hamburger > div:before,
+.menu-wrap .toggler:checked + .hamburger > div:after {
+  top: 0;
+  transform: rotate(90deg);
+}
+/* Hover rotate*/
+.menu-wrap .toggler:checked:hover + .hamburger > div {
+  transform: rotate(225deg);
+}
+
+/* Show menu */
+.menu-wrap .toggler:checked ~ .menu {
+  visibility: visible;
+}
+.menu-wrap .toggler:checked ~ .menu > div {
+  transform: scale(1);
+  transition-duration: var(--menu-speed);
+}
+.menu-wrap .toggler:checked ~ .menu > div > div {
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+
+/* Navigation */
+.menu-wrap .menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.menu-wrap .menu > div {
+  background: var(--shallow-background);
+  border-radius: 50%;
+  width: 500vw;
+  height: 500vw;
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  transform: scale(0);
+  transition: all 0.4s ease;
+}
+.menu-wrap .menu > div > div {
+  text-align: center;
+  max-width: 90vw;
+  max-height: 100vh;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+} 
+.menu-wrap .menu > div > div > ul > li {
+  list-style: none;
+  color: #FFF;
+  font-size: 1.5rem;
+  padding: 1rem;
+}
+.menu-wrap .menu > div > div > ul > li > .menu-item > input {
+  font-size: 1rem;
+  padding: 0.3rem;
+  width: 65vw;
+}
+.menu-wrap .menu > div > div > ul > li > .menu-item > a {
+  margin: 0;
+  font-size: 1.5rem;
+  background: transparent;  
+  width: 1.5rem;
+  padding: 0;
+  padding-top: 0.5rem;
+  padding-left: 0.5rem;
+}
+.menu-wrap .menu > div > div > ul > li > .menu-item {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.4s ease;
+  cursor: pointer;
+}
+.menu-wrap .menu > div > div > ul > li > button.menu-item  {
+  border: none;
+  background: transparent;
+  font-size: 1.5rem;
+}
+
+@media screen and (min-width: 600px) {
+  .menu-wrap .menu > div > div > ul > li > .menu-item > input {
+    font-size: 1.3rem;
+    padding: 0.4rem 0.6rem;
+    width: 60vw;
+  }
+  .menu-wrap .menu > div > div > ul > li > .menu-item > a {
+    font-size: 2rem;
+  }
+}
+
+@media screen and (min-width: 920px) {
+  .menu-wrap .menu > div > div > ul > li > .menu-item > input {
+    font-size: 1.5rem;
+    padding: 0.4rem 0.6rem;
+    width: 30vw;
+  }
+}
+@media (min-width: 500px) {
+  html{
+    background: url(/assets/img/bg1.jpg)  no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+  div.App {
+    width: 80%;
+    margin: 0 auto;
+  }
+  div.landing img {
+    max-width: 50vw;
+  }
+  header img.logo {
+    max-width: 15vw;
+    margin: 1rem;
+  }
+}
+@media (min-width: 720px) {
+  div.landing img {
+    max-width: 25vw;
+  }
+  header img.logo {
+    max-width: 12vw;
+  }
+  div.tournament {
+    font-size: 1.2rem;
+  }
+}
+@media (min-width: 1000px) {
+  div.landing img {
+    max-width: 30vw;
+  }
+  header img.logo {
+    max-width: 8vw;
+  }
+  div.tournament {
+    max-width: 80%;
+    padding-left: 3rem;
+    margin: auto;
+  }
+}
+@media (min-width: 1400px) {
+  div.landing img {
+    max-width: 20vw;
+  }
+  header img.logo {
+    max-width: 6vw;
+  }
+  div.table-container {
+    padding: 1rem;
+  }
+  table {
+    font-size: 1.2rem;
+  }
+  div.tournament {
+    max-width: 60%;
+    margin-left: 3rem;
+    margin: auto;
+  }
 }
