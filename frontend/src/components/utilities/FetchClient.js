@@ -30,7 +30,7 @@ export function getTournaments (callback) {
     .then(response => {
       callback(response.data.tournaments);
     })
-    .catch(err => console.log(err));
+    .catch(err => callback(err));
 }
 
 export function getTournamentById  (id, callback) {
@@ -38,7 +38,7 @@ export function getTournamentById  (id, callback) {
     .then(response => {
       callback(response.data.tournament);
     })
-    .catch(err => console.log(err));
+    .catch(err => callback(err));
 }
 
 export function postNewTournament  (data, callback) {

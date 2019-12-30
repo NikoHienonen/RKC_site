@@ -29,7 +29,7 @@ export default function FormHandler(initialState, validate, id, navigate) {
         setSubmitting(false);
       }
     }
-  }, [errors]);
+  });
   
   function sendTournament(data) {
     updateTournament(id, data, result => {

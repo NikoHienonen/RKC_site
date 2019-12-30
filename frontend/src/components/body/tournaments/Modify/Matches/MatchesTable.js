@@ -32,7 +32,6 @@ export default function MatchesTable({id, matches, deleteMatchById, toggleRefres
           {matches.map((match) => {
             const {homeTeam, visitorTeam, homeRoundsWon, 
               visitorRoundsWon, startingTime, refereeName} = match;
-            console.log(match)
             return <tr key={match._id}>
               <td>{startingTime}</td>
               <td>{homeTeam}</td>

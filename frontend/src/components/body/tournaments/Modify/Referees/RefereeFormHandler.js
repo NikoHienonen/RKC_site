@@ -23,11 +23,10 @@ export default function FormHandler(initialState, validate, _id, toggleRefresh) 
         setSubmitting(false);
       }
     }
-  }, [errors]);
+  });
   
   function sendReferee(referee) {
     addReferee(referee, _id, result => {
-      console.log(result)
       alert(result.err ? 'Lisäys epäonnistui' : 'Lisäys onnistui');
       toggleRefresh();
     })

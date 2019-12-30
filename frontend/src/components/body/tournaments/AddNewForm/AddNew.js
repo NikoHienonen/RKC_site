@@ -21,7 +21,6 @@ const INITIAL_STATE = {
 export default function AddNew(props) {
   const { 
     handleChange, 
-    handleTeamsChange, 
     handleDateChange, 
     handleBlur, 
     submit, 

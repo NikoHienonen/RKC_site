@@ -15,12 +15,11 @@ export default function Standings(props) {
       const tournamentId = sessionStorage.getItem('tournamentId');
       if(tournamentId) {
         getTournamentById(tournamentId, (result) => {
-          console.log(result)
           setTournament(result);
         })
       }
     }
-  }, [])
+  });
   return (
     <div className="mb3-container">
       <h1>Sarjataulukko</h1>

@@ -23,7 +23,7 @@ export default function ModifyTeams(props) {
         })
       }
     }
-  }, [])
+  });
 
   const navigate = () => {
     props.history.push(`/turnaukset/${tournament.name}/`);

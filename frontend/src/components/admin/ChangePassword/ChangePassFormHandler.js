@@ -16,7 +16,7 @@ export default function ChangePassFormHandler(initialState, validate, navigate, 
         setSubmitting(false);
       }
     }
-  }, [errors]);
+  });
 
   function changePass() {
     const data = {
@@ -24,7 +24,6 @@ export default function ChangePassFormHandler(initialState, validate, navigate, 
       newPassword: values.newPassword
     }
     changePassword(adminId, data, result => {
-      console.log(result.status)
       if(result.status === 200) {
         alert('Salasana vaihdettu');
         navigate();

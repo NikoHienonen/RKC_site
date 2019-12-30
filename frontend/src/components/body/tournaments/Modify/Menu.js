@@ -15,12 +15,11 @@ export default function Menu(props) {
       const tournamentId = sessionStorage.getItem('tournamentId');
       if(tournamentId) {
         getTournamentById(tournamentId, (result) => {
-          console.log(result)
           setTournament(result);
         })
       }
     }
-  }, [])
+  });
   return (
     <div>
       {

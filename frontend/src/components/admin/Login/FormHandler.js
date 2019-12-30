@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect } from 'react'
 import { login } from '../../utilities/FetchClient';
 import { useAuthDataContext } from '../../utilities/AuthDataProvider';
 
@@ -6,7 +6,6 @@ export default function FormHandler(initialState, validate, navigate) {
   const [values, setValues] = useState(initialState);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setSubmitting] = useState(false);
-  console.log(useAuthDataContext)
   const { onLogin } = useAuthDataContext();
 
   useEffect(() => {
@@ -19,7 +18,7 @@ export default function FormHandler(initialState, validate, navigate) {
         setSubmitting(false);
       }
     }
-  }, [errors]);
+  }, [isSubmitting, errors, attemptLogin]);
 
   function attemptLogin() {
     const admin = {
@@ -27,7 +26,6 @@ export default function FormHandler(initialState, validate, navigate) {
       password: values.password
     }
     login(admin, result => {
-      console.log(result.status)
       if(result.status === 200) {
         onLogin(result.data.token, result.data.id);
         navigate();
@@ -47,6 +45,7 @@ export default function FormHandler(initialState, validate, navigate) {
 
   function handleBlur() {
     const validationErrors = validate(values);
+    setErrors(validationErrors);
   }
 
   function submit(e) {

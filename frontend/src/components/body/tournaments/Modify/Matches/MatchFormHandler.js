@@ -31,12 +31,10 @@ export default function MatchFormHandler(defaultMatch, initialState,
         setSubmitting(false);
       }
     }
-  }, [errors]);
+  }, [errors], defaultMatch, isSubmitting, sendMatch, values);
   
   function sendMatch(data) {
-    console.log(data)
     addMatch(data, _id, result => {
-      console.log(result)
       alert(result.err ? 'Lisäys epäonnistui' : 'Lisäys onnistui');
       toggleRefresh();
     });
@@ -50,7 +48,6 @@ export default function MatchFormHandler(defaultMatch, initialState,
   }
 
   function handleChange(e) {
-    console.log(e)
     setValues({
       ...values,
       [e.target.name]: e.target.value

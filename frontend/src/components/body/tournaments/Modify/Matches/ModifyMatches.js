@@ -22,7 +22,7 @@ export default function ModifyMatches(props) {
         })
       }
     }
-  }, [])
+  });
 
   const navigate = () => {
     props.history.push(`/turnaukset/${tournament.name}/`);

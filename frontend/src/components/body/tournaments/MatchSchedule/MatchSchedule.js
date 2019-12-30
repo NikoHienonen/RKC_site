@@ -16,12 +16,11 @@ export default function MatchSchedule() {
       const tournamentId = sessionStorage.getItem('tournamentId');
       if(tournamentId) {
         getTournamentById(tournamentId, (result) => {
-          console.log(result)
           setTournament(result);
         })
       }
     }
-  }, [])
+  });
   return (
     <div>
       {!tournament

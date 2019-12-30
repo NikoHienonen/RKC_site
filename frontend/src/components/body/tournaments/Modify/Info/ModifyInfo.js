@@ -18,7 +18,7 @@ export default function ModifyInfo(props) {
         })
       }
     }
-  }, [])
+  });
 
   const navigate = () => {
     props.history.push(`/turnaukset/${tournament.name}/`);

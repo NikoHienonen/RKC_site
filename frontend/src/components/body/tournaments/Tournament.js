@@ -9,22 +9,19 @@ import NoTournamentFound from '../../static/NoTournament';
 
 export default function Tournament(props) {
   const [tournament, setTournament] = useState(null);
-  const [refresh, setRefresh] = useState(true);
   const context = useContext(TournamentContext);
   const { getTournamentById } = context;
 
   useEffect(() => {
-    if(!tournament || refresh) {
-      setRefresh(false);
+    if(!tournament) {
       const tournamentId = sessionStorage.getItem('tournamentId');
       if(tournamentId) {
         getTournamentById(tournamentId, (result) => {
-          console.log(result)
           setTournament(result);
         })
       }
     }
-  }, [])
+  });
 
   return (
     <div className="card tournament">
@@ -41,7 +38,6 @@ export default function Tournament(props) {
               <Link to={`/turnaukset/${tournament.name}/muokkaa`}>Muokkaa</Link>
               <button className="delete" 
                 onClick={() => deleteTournament(tournament._id, result => {
-                  console.log(result);
                   alert(result.message ? "Poisto epäonnistui" : "Poisto Onnistui");
                   props.history.push('/turnaukset');
                 })}

@@ -20,12 +20,10 @@ export default function FormHandler(initialState, validate, id, toggleRefresh) {
         setSubmitting(false);
       }
     }
-  }, [errors]);
+  });
   
   function postTeam(data) {
     addTeam(data, id, result => {
-      //alert(result.data.msg ? result.data.msg : 'Lisäys epäonnistui');
-      console.log(result)
       toggleRefresh();
     });
   }

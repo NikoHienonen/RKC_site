@@ -9,7 +9,6 @@ const AuthDataProvider = props => {
 
   useEffect(() => {
     const currentAuthData = sessionStorage.getItem('currentAuthData');
-    console.log(currentAuthData)
     if (currentAuthData) {
       setAuthData(currentAuthData);
     }
