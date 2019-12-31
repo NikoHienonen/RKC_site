@@ -36,22 +36,28 @@ router.post('/login', (req, res) => {
         } else {
           bcrypt.compare(password, referee.password, (err, result) => {
             if(err) {
-              res.status(403).json({
-                err: 'Väärä salasana'
+              res.status(500).json({
+                err: err
               });
             } else {
-              jwt.sign({referee: referee}, 'secretKey', {expiresIn: '24h'}, (err, token) => {
-                if(err) {
-                  res.status(500).json({
-                    err: er
-                  });
-                } else {
-                  res.status(200).json({
-                    message: 'Kirjauduttu',
-                    token: token
-                  })
-                }
-              });
+              if(!result) {
+                res.status(403).json({
+                  err: 'Väärä salasana'
+                });
+              } else {
+                jwt.sign({referee: referee}, 'secretKey', {expiresIn: '24h'}, (err, token) => {
+                  if(err) {
+                    res.status(500).json({
+                      err: er
+                    });
+                  } else {
+                    res.status(200).json({
+                      message: 'Kirjauduttu',
+                      token: token
+                    })
+                  }
+                });
+              }
             }
           })
         }
