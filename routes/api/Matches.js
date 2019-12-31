@@ -135,65 +135,71 @@ router.patch('/:matchId', verifyToken, (req, res) => {
 router.patch('/played/:matchId', verifyToken, (req ,res) => {
   const { tournamentId, matchId } = req.params;
   const { match } = req.body;
-  Tournament.findById(tournamentId, (err, tournament) => {
-    if(err) {
-      console.log("no tournament")
-      res.status(500).json({
-        error: err
-      });
-    } else {
-      const foundMatch = tournament.matches.id(matchId);
-      console.log(foundMatch)
-      if(!foundMatch) {
-        console.log("no match")
-        res.status(404).json({
-          error: "No match found"
-        })
+  if(!match) {
+    res.status(400).json({
+      err: 'No match found in body'
+    });
+  } else {
+    Tournament.findById(tournamentId, (err, tournament) => {
+      if(err) {
+        console.log("no tournament")
+        res.status(500).json({
+          error: err
+        });
       } else {
-        foundMatch.homeRoundsWon = match.homeRoundsWon;
-        foundMatch.visitorRoundsWon = match.visitorRoundsWon;
-        foundMatch.homePointsWon = match.homePointsWon;
-        foundMatch.visitorPointsWon = match.visitorPointsWon;
-
-        const home = tournament.teams.find(team => team.name === foundMatch.homeTeam);
-        const visitor = tournament.teams.find(team => team.name === foundMatch.visitorTeam);
-        if(!home || !visitor) {
-          console.log("no team")
+        const foundMatch = tournament.matches.id(matchId);
+        console.log(foundMatch)
+        if(!foundMatch) {
+          console.log("no match")
           res.status(404).json({
-            error: "No team found"
+            error: "No match found"
           })
         } else {
-          const { homeRoundsWon, visitorRoundsWon, homePointsWon, visitorPointsWon} = match;
-
-          if(homeRoundsWon > visitorRoundsWon) {
-            home.gamesWon++;
-            visitor.gamesLost++;
-          } else if (homeRoundsWon < visitorRoundsWon) {
-            home.gamesLost++;
-            visitor.gamesWon++;
+          foundMatch.homeRoundsWon = match.homeRoundsWon;
+          foundMatch.visitorRoundsWon = match.visitorRoundsWon;
+          foundMatch.homePointsWon = match.homePointsWon;
+          foundMatch.visitorPointsWon = match.visitorPointsWon;
+  
+          const home = tournament.teams.find(team => team.name === foundMatch.homeTeam);
+          const visitor = tournament.teams.find(team => team.name === foundMatch.visitorTeam);
+          if(!home || !visitor) {
+            console.log("no team")
+            res.status(404).json({
+              error: "No team found"
+            })
           } else {
-            home.gamesDraw++;
-            visitor.gamesDraw++;
+            const { homeRoundsWon, visitorRoundsWon, homePointsWon, visitorPointsWon} = match;
+  
+            if(homeRoundsWon > visitorRoundsWon) {
+              home.gamesWon++;
+              visitor.gamesLost++;
+            } else if (homeRoundsWon < visitorRoundsWon) {
+              home.gamesLost++;
+              visitor.gamesWon++;
+            } else {
+              home.gamesDraw++;
+              visitor.gamesDraw++;
+            }
+            home.roundsWon += Number(homeRoundsWon);
+            home.roundsLost += Number(visitorRoundsWon);
+            home.pointsWon += Number(homePointsWon);
+            home.pointsLost += Number(visitorPointsWon);
+            home.gamesPlayed++;
+            visitor.roundsPlayed += Number(homeRoundsWon) + Number(visitorRoundsWon);
+            visitor.roundsWon += Number(visitorRoundsWon);
+            visitor.roundsLost += Number(homeRoundsWon);
+            visitor.pointsWon += Number(visitorPointsWon);
+            visitor.pointsLost += Number(homePointsWon);
+            visitor.gamesPlayed++;
+            tournament.save()
+            res.status(201).json({
+              msg: "Succesfully updated"
+            });
           }
-          home.roundsWon += Number(homeRoundsWon);
-          home.roundsLost += Number(visitorRoundsWon);
-          home.pointsWon += Number(homePointsWon);
-          home.pointsLost += Number(visitorPointsWon);
-          home.gamesPlayed++;
-          visitor.roundsPlayed += Number(homeRoundsWon) + Number(visitorRoundsWon);
-          visitor.roundsWon += Number(visitorRoundsWon);
-          visitor.roundsLost += Number(homeRoundsWon);
-          visitor.pointsWon += Number(visitorPointsWon);
-          visitor.pointsLost += Number(homePointsWon);
-          visitor.gamesPlayed++;
-          tournament.save()
-          res.status(201).json({
-            msg: "Succesfully updated"
-          });
         }
       }
-    }
-  })
+    })
+  }
 });
 
 // Delete a match by its ID
