@@ -16,43 +16,34 @@ const matches = require('./Matches');
 const referees = require('./Referees');
 
 // Get all tournaments
-router.get('/', verifyToken, (req, res) => {
-  jwt.verify(req.token, 'secretKey', (err, authData) => {
-    if(err) {
-      console.log(err)
-      res.status(403).json({
-        msg: 'Unauthorized'
-      });
-    } else {
-      Tournament.find()
-      .exec()
-      .then(documents => {
-        res.status(200).json({
-          count: documents.length,
-          tournaments: documents.map(doc => {
-            return {
-              _id: doc._id,
-              name: doc.name,
-              location: doc.location,
-              date: doc.date,
-              defaultMatch: doc.defaultMatch,
-              teams: doc.teams,
-              referees: doc.referees,
-              matches: doc.matches,
-              request: {
-                type: 'GET',
-                url: 'http://localhost:5000/api/tournaments/'+doc._id
-              }
-            }
-          })
-        });
+router.get('/', (req, res) => {
+  Tournament.find()
+  .exec()
+  .then(documents => {
+    res.status(200).json({
+      count: documents.length,
+      tournaments: documents.map(doc => {
+        return {
+          _id: doc._id,
+          name: doc.name,
+          location: doc.location,
+          date: doc.date,
+          defaultMatch: doc.defaultMatch,
+          teams: doc.teams,
+          referees: doc.referees,
+          matches: doc.matches,
+          request: {
+            type: 'GET',
+            url: 'http://localhost:5000/api/tournaments/'+doc._id
+          }
+        }
       })
-      .catch(err => {
-        res.status(500).json({
-          error: err
-        });
-      })
-    }
+    });
+  })
+  .catch(err => {
+    res.status(500).json({
+      error: err
+    });
   });
 });
 
