@@ -32,10 +32,6 @@ router.get('/', (req, res) => {
           teams: doc.teams,
           referees: doc.referees,
           matches: doc.matches,
-          request: {
-            type: 'GET',
-            url: 'http://localhost:5000/api/tournaments/'+doc._id
-          }
         }
       })
     });
