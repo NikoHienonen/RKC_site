@@ -30,5 +30,5 @@ Untill the application has been deployed, you can download the source code and:
 * 6. Note that the api is not fully operational currently!!
 
 ## Status
-version: 1.1.0
-The app is in production currently.
+version: 1.2.0
+The app is finished.
