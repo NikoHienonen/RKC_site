@@ -215,6 +215,11 @@ td, th {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 }
+
+table > button {
+  margin: 0.5rem auto;
+}
+
 .tournament {
   padding: 2rem 0.5rem;
 }
@@ -223,7 +228,7 @@ div.actions {
 }
 div.actions a, button {
   display: block;
-  margin: 0.5rem auto;
+  margin: 0.5rem;
 }
 
 button.delete {
