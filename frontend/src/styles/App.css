@@ -223,7 +223,7 @@ div.actions {
 }
 div.actions a, button {
   display: block;
-  margin: 0.5rem;
+  margin: 0.5rem auto;
 }
 
 button.delete {

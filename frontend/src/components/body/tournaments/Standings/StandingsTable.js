@@ -2,12 +2,16 @@ import React from 'react';
 
 export default function StandingsTable({teams}) {
   const compare = (a, b) => {
+    const aWins = a.gamesWon;
+    const bWins = b.gamesWon;
+    if(aWins !== bWins) return bWins - aWins;
     const aRounds = a.roundsWon;
     const bRounds = b.roundsWon; 
     if(aRounds !== bRounds) return  bRounds - aRounds;
     const aPoints = a.pointsWon - a.pointsLost;
-    const bPoints = b.pointsWon - b.pointsWon;
-    if(aPoints !== bPoints) return aPoints - bPoints;
+    const bPoints = b.pointsWon - b.pointsLost;
+    console.log(aPoints, bPoints)
+    if(aPoints !== bPoints) return bPoints - aPoints;
   };
 
   const getPoints = (won, lost) => {
