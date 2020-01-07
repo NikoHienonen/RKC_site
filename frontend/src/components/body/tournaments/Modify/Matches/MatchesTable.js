@@ -1,6 +1,11 @@
 import React from 'react';
 
 export default function MatchesTable({id, matches, deleteMatchById, toggleRefresh}) {
+  const compare = (a, b) => {
+    return a.startingTime.localeCompare(b.startingTime);
+  }
+  const sorted = [...matches].sort(compare);
+
   return (
     <div className="table-container">
       <table>
@@ -29,7 +34,7 @@ export default function MatchesTable({id, matches, deleteMatchById, toggleRefres
           </tr>
         </thead>
         <tbody>
-          {matches.map((match) => {
+          {sorted.map((match) => {
             const {homeTeam, visitorTeam, homeRoundsWon, 
               visitorRoundsWon, startingTime, refereeName} = match;
             return <tr key={match._id}>
