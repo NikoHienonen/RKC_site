@@ -1,189 +1,180 @@
-const router = require('express').Router();
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const jwt = require('jsonwebtoken');
+const router = require("express").Router();
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const jwt = require("jsonwebtoken");
 
 // Use body-parser
-router.use(bodyParser.urlencoded({extended: false}));
+router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
 //Tournament Model
-const Tournament = require('../../models/Tournament');
+const Tournament = require("../../models/Tournament");
 
 // load auxiliary routes
-const teams = require('./Teams');
-const matches = require('./Matches');
-const referees = require('./Referees');
+const teams = require("./Teams");
+const matches = require("./Matches");
+const referees = require("./Referees");
 
 // Get all tournaments
-router.get('/', (req, res) => {
+router.get("/", (req, res) => {
   Tournament.find()
-  .exec()
-  .then(documents => {
-    res.status(200).json({
-      count: documents.length,
-      tournaments: documents.map(doc => {
-        return {
-          _id: doc._id,
-          name: doc.name,
-          location: doc.location,
-          date: doc.date,
-          defaultMatch: doc.defaultMatch,
-          teams: doc.teams,
-          referees: doc.referees,
-          matches: doc.matches,
-        }
-      })
+    .exec()
+    .then((documents) => {
+      res.status(200).json({
+        count: documents.length,
+        tournaments: documents.map((doc) => {
+          return {
+            _id: doc._id,
+            name: doc.name,
+            location: doc.location,
+            date: doc.date,
+            defaultMatch: doc.defaultMatch,
+            teams: doc.teams,
+            referees: doc.referees,
+            matches: doc.matches,
+          };
+        }),
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: err,
+      });
     });
-  })
-  .catch(err => {
-    res.status(500).json({
-      error: err
-    });
-  });
 });
 
 // Get tournament by id
-router.get('/:tournamentId', verifyToken, (req, res) => {
+router.get("/:tournamentId", (req, res) => {
   const { tournamentId } = req.params;
-  jwt.verify(req.token, 'secretKey', (err, authData) => {
-    if(err) {
-      console.log(err)
-      res.status(403).json({
-        msg: 'Unauthorized'
-      });
-    } else {
-      Tournament.findById(tournamentId)
-        .exec()
-        .then(tournament => {
-          if (!tournament) {
-            return res.status(404).json({
-              message: "Tournament not found"
-            });
-          }
-          res.status(200).json({
-            tournament: tournament
-          });
-        })
-        .catch(err => {
-          res.status(500).json({
-            error: err
-          })
+
+  Tournament.findById(tournamentId)
+    .exec()
+    .then((tournament) => {
+      if (!tournament) {
+        return res.status(404).json({
+          message: "Tournament not found",
         });
-    }
-  });
+      }
+      res.status(200).json({
+        tournament: tournament,
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: err,
+      });
+    });
 });
 
 //Create new tournament
-router.post('/', verifyToken, (req, res) => {
+router.post("/", verifyToken, (req, res) => {
   const { name, location, date, defaultMatch } = req.body;
-  jwt.verify(req.token, 'secretKey', (err, authData) => {
-    if(err) {
-      console.log(err)
+  jwt.verify(req.token, "secretKey", (err, authData) => {
+    if (err) {
+      console.log(err);
       res.status(403).json({
-        msg: 'Unauthorized'
+        msg: "Unauthorized",
       });
     } else {
       Tournament.create({
         name: name,
         location: location,
         date: date,
-        defaultMatch: defaultMatch
+        defaultMatch: defaultMatch,
       })
-        .then(tournament => {
+        .then((tournament) => {
           res.status(201).json({
             message: "Tournament created",
-            tournament: tournament
-          })
+            tournament: tournament,
+          });
         })
-        .catch(err => {
+        .catch((err) => {
           res.status(500).json({
-            error: err
+            error: err,
           });
         });
     }
   });
-})
+});
 
 // Update a tournament by ID
-router.patch('/:tournamentId', verifyToken, (req ,res) => {
+router.patch("/:tournamentId", verifyToken, (req, res) => {
   const { tournamentId } = req.params;
   const { name, date, location, defaultMatch } = req.body;
-  jwt.verify(req.token, 'secretKey', (err, authData) => {
-    if(err) {
-      console.log(err)
+  jwt.verify(req.token, "secretKey", (err, authData) => {
+    if (err) {
+      console.log(err);
       res.status(403).json({
-        msg: 'Unauthorized'
+        msg: "Unauthorized",
       });
     } else {
-      Tournament.findByIdAndUpdate(tournamentId, 
-        {
-          name: name,
-          date: date,
-          location: location,
-          defaultMatch: defaultMatch
-        })
-        .then(result => {
+      Tournament.findByIdAndUpdate(tournamentId, {
+        name: name,
+        date: date,
+        location: location,
+        defaultMatch: defaultMatch,
+      })
+        .then((result) => {
           res.status(200).json({
-            message: "Successfully updated"
+            message: "Successfully updated",
           });
         })
-        .catch(err => {
+        .catch((err) => {
           res.status(500).json({
-            error: err
+            error: err,
           });
         });
     }
   });
-})
+});
 
 // Delete a tournament by ID
-router.delete('/:tournamentId', verifyToken, (req, res) => {
+router.delete("/:tournamentId", verifyToken, (req, res) => {
   const { tournamentId } = req.params;
-  jwt.verify(req.token, 'secretKey', (err, authData) => {
-    if(err) {
-      console.log(err)
+  jwt.verify(req.token, "secretKey", (err, authData) => {
+    if (err) {
+      console.log(err);
       res.status(403).json({
-        msg: 'Unauthorized'
+        msg: "Unauthorized",
       });
     } else {
       Tournament.findByIdAndRemove(tournamentId, (err, result) => {
-        if(err) {
+        if (err) {
           res.status(500).json({
-            error: err
+            error: err,
           });
         } else {
           res.status(200).json({
-            message: "Tournament deleted"
-          })
+            message: "Tournament deleted",
+          });
         }
-      })
+      });
     }
   });
 });
 
 function verifyToken(req, res, next) {
   // Get Auth header value
-  const bearerHeader = req.headers['authorization'];
+  const bearerHeader = req.headers["authorization"];
 
   // Check if bearer is undefined
-  if(typeof bearerHeader !== 'undefined') {
+  if (typeof bearerHeader !== "undefined") {
     // Deconstruct bearer
-    const bearer = bearerHeader.split(' ');
+    const bearer = bearerHeader.split(" ");
     const bearerToken = bearer[1];
     req.token = bearerToken;
-    next(); 
+    next();
   } else {
     // Forbidden
     res.status(403).json({
-      err: 'Unauthorized'
+      err: "Unauthorized",
     });
   }
 }
 
 // Use auxiliary routes
-router.use('/:tournamentId/teams', teams);
-router.use('/:tournamentId/matches', matches);
-router.use('/:tournamentId/referees', referees);
+router.use("/:tournamentId/teams", teams);
+router.use("/:tournamentId/matches", matches);
+router.use("/:tournamentId/referees", referees);
 
 module.exports = router;

@@ -23,14 +23,13 @@ app.use(bodyParser.json());
 mongoose.set("useFindAndModify", false);
 
 //DB configuration
-const db = require("./conf/keys").mongoURI;
-
-console.log(db);
+const db = require("./conf/keys");
 
 // connect Mongo
 mongoose
   .connect(db, {
     useNewUrlParser: true,
+    useUnifiedTopology: true,
   })
   .then(() => console.log("MongoDB connected."))
   .catch((err) => console.log(err));
