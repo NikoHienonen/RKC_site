@@ -55,30 +55,6 @@ router.post("/login", (req, res) => {
   });
 });
 
-//Create first admin
-router.get("/create-first-admin", (req, res) => {
-  const password = "rkcvolley";
-  const username = "antti";
-  bcrypt.hash(password, 10, (err, hash) => {
-    Admin.create({
-      username,
-      password: hash,
-    })
-      .then((admin) => {
-        res.status(201).json({
-          message: "Admin created",
-          admin: admin.username,
-          password,
-        });
-      })
-      .catch((err) => {
-        res.status(500).json({
-          error: err,
-        });
-      });
-  });
-});
-
 //Create new admin
 router.post("/", verifyToken, (req, res) => {
   console.log(req.body);
