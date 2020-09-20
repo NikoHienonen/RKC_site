@@ -1,7 +1,7 @@
 const router = require("express").Router({ mergeParams: true });
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const bcrypt = require("bcrypt-nodejs");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 // Use body-parser

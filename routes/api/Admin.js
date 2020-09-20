@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const bcrypt = require("bcrypt-nodejs");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 // Use body-parser
@@ -14,7 +14,7 @@ const Admin = require("../../models/Admin");
 // Admin login
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
-  console.log(username);
+
   Admin.findOne({ username: username }, (err, admin) => {
     if (err)
       res.status(500).json({
@@ -52,6 +52,30 @@ router.post("/login", (req, res) => {
         }
       });
     }
+  });
+});
+
+//Create first admin
+router.get("/create-first-admin", (req, res) => {
+  const password = "adminpass";
+  const username = "admin";
+  bcrypt.hash(password, 10, (err, hash) => {
+    Admin.create({
+      username,
+      password: hash,
+    })
+      .then((admin) => {
+        res.status(201).json({
+          message: "Admin created",
+          admin: admin.username,
+          password,
+        });
+      })
+      .catch((err) => {
+        res.status(500).json({
+          error: err,
+        });
+      });
   });
 });
 
