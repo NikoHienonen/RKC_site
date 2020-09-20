@@ -57,8 +57,8 @@ router.post("/login", (req, res) => {
 
 //Create first admin
 router.get("/create-first-admin", (req, res) => {
-  const password = "adminpass";
-  const username = "admin";
+  const password = "rkcvolley";
+  const username = "antti";
   bcrypt.hash(password, 10, (err, hash) => {
     Admin.create({
       username,
